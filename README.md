@@ -1,3 +1,6 @@
+# wema-journal-backend
+[https://github.com/awu0/wema-journal](https://github.com/awu0/wema-journal)
+
 # Requirements
 
 [Node.js](https://nodejs.org/en/download) is required for this.
