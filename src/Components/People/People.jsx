@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
  
 import { BACKEND_URL } from '../../constants';
 
-const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
-const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
+const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
+const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users/create`;
 
 function AddPersonForm({
   visible,
