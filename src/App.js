@@ -1,20 +1,11 @@
 import React from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useParams,
-} from 'react-router-dom';
+import {BrowserRouter, Route, Routes,} from 'react-router-dom';
 
 import './App.css';
 
 import Navbar from './Components/Navbar';
 import People from './Components/People';
-
-function PersonPage() {
-  const { name } = useParams();
-  return <h1>{name}</h1>
-}
+import {PersonPage} from "./Components/People/PersonPage";
 
 function App() {
   return (
@@ -24,7 +15,7 @@ function App() {
         {/* For a different home page, do:
          <Route index element={<Login />} /> */}
         <Route path="people" element={<People />} />
-        <Route path="people/:name" element={<PersonPage />} />
+        <Route path="people/:email" element={<PersonPage />} />
       </Routes>
     </BrowserRouter>
   );

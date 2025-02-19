@@ -68,7 +68,7 @@ ErrorMessage.propTypes = {
 function Person({ person }) {
   const { name, email } = person;
   return (
-    <Link to={name}>
+    <Link to={`/people/${email}`}>
       <div className="person-container">
         <h2>{name}</h2>
         <p>
