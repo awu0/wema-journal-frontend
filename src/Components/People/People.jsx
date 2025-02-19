@@ -126,7 +126,7 @@ function People() {
         setError={setError}
       />
       {error && <ErrorMessage message={error} />}
-      {people.map((person) => <Person key={person.name} person={person} />)}
+      {people.map((person) => <Person key={person.email} person={person} />)}
     </div>
   );
 }
