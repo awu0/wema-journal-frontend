@@ -47,9 +47,9 @@ multiple pages, we can write one and import it where needed.
 
 Use axios to send a GET request. Render the response in the browser.
 
-# wema-journal-backend
-[https://github.com/awu0/wema-journal](https://github.com/awu0/wema-journal)
-
 # Creating the Add Person button
 
 Use axios to send a POST request.
+
+# wema-journal-backend
+[https://github.com/awu0/wema-journal](https://github.com/awu0/wema-journal)
