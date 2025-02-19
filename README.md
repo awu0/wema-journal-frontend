@@ -1,5 +1,4 @@
-# wema-journal-backend
-[https://github.com/awu0/wema-journal](https://github.com/awu0/wema-journal)
+# wema-journal-frontend
 
 # Requirements
 
@@ -47,6 +46,9 @@ multiple pages, we can write one and import it where needed.
 # Creating the list of Pepole
 
 Use axios to send a GET request. Render the response in the browser.
+
+# wema-journal-backend
+[https://github.com/awu0/wema-journal](https://github.com/awu0/wema-journal)
 
 # Creating the Add Person button
 
