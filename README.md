@@ -1,7 +1,7 @@
 # wema-journal-frontend
 > Forked from [Ernulphus/demo-frontend](https://github.com/Ernulphus/demo-frontend)
 
-An app (frontend) developed by **WEMA** (William, Eric, Matthew, Aaron)
+An app (frontend) developed by **WEMA** (William, Eric, Matthew, Aaron).
 
 The backend server for WEMA can be found here: [awu0/wema-journal](https://github.com/awu0/wema-journal)
 
