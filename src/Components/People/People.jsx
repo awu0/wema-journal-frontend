@@ -16,6 +16,7 @@ function AddPersonForm({
                        }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [affiliation, setAffiliation] = useState('');
 
   const changeName = (event) => {
     setName(event.target.value);
@@ -23,13 +24,16 @@ function AddPersonForm({
   const changeEmail = (event) => {
     setEmail(event.target.value);
   };
+  const changeAffliation = (event) => {
+    setAffiliation(event.target.value);
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
     const newPerson = {
       name: name,
       email: email,
-      affiliation: '',
+      affiliation: affiliation,
       role: ''
     }
     axios.post(PEOPLE_CREATE_ENDPOINT, newPerson)
@@ -47,10 +51,16 @@ function AddPersonForm({
         Name
       </label>
       <input required type="text" id="name" value={name} onChange={changeName}/>
+
       <label htmlFor="email">
         Email
       </label>
       <input required type="text" id="email" onChange={changeEmail}/>
+
+      <label htmlFor="affiliation">
+        Affiliation
+      </label>
+      <input type="text" id="affiliation" onChange={changeAffliation}/>
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>
     </form>
