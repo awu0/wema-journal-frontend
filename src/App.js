@@ -10,6 +10,7 @@ import './App.css';
 import Navbar from './Components/Navbar';
 import People from './Components/People';
 import { PersonPage } from "./Components/People/PersonPage";
+import About from './Components/About';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
         
         {/* Dynamic route for individual person */}
         <Route path="people/:email" element={<PersonPage />} />
+
+        {/* About page route */}
+        <Route path="about" element={<About />} /> {/* Add About route */}
       </Routes>
     </BrowserRouter>
   );
