@@ -1,34 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
- 
-import { BACKEND_URL } from '../../constants';
+import {Link} from 'react-router-dom';
+
+import {BACKEND_URL} from '../../constants';
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
-const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users/create`;
+const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users`;
 
 function AddPersonForm({
-  visible,
-  cancel,
-  fetchPeople,
-  setError,
-}) {
+                         visible,
+                         cancel,
+                         fetchPeople,
+                         setError,
+                       }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  const changeName = (event) => { setName(event.target.value); };
-  const changeEmail = (event) => { setEmail(event.target.value); };
+  const changeName = (event) => {
+    setName(event.target.value);
+  };
+  const changeEmail = (event) => {
+    setEmail(event.target.value);
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
     const newPerson = {
       name: name,
       email: email,
+      affiliation: '',
+      role: ''
     }
-    axios.put(PEOPLE_CREATE_ENDPOINT, newPerson)
+    axios.post(PEOPLE_CREATE_ENDPOINT, newPerson)
       .then(fetchPeople)
-      .catch((error) => { setError(`There was a problem adding the person. ${error}`); });
+      .catch((error) => {
+        console.log(error.toJSON())
+        setError(`There was a problem adding the person. ${error}`);
+      });
   };
 
   if (!visible) return null;
@@ -37,16 +46,17 @@ function AddPersonForm({
       <label htmlFor="name">
         Name
       </label>
-      <input required type="text" id="name" value={name} onChange={changeName} />
+      <input required type="text" id="name" value={name} onChange={changeName}/>
       <label htmlFor="email">
         Email
       </label>
-      <input required type="text" id="email" onChange={changeEmail} />
+      <input required type="text" id="email" onChange={changeEmail}/>
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>
     </form>
   );
 }
+
 AddPersonForm.propTypes = {
   visible: propTypes.bool.isRequired,
   cancel: propTypes.func.isRequired,
@@ -54,19 +64,20 @@ AddPersonForm.propTypes = {
   setError: propTypes.func.isRequired,
 };
 
-function ErrorMessage({ message }) {
+function ErrorMessage({message}) {
   return (
     <div className="error-message">
       {message}
     </div>
   );
 }
+
 ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-function Person({ person }) {
-  const { name, email } = person;
+function Person({person}) {
+  const {name, email} = person;
   return (
     <Link to={`/people/${email}`}>
       <div className="person-container">
@@ -78,6 +89,7 @@ function Person({ person }) {
     </Link>
   );
 }
+
 Person.propTypes = {
   person: propTypes.shape({
     name: propTypes.string.isRequired,
@@ -99,13 +111,19 @@ function People() {
   const fetchPeople = () => {
     axios.get(PEOPLE_READ_ENDPOINT)
       .then(
-        ({ data }) => { setPeople(peopleObjectToArray(data)) }
-    )
+        ({data}) => {
+          setPeople(peopleObjectToArray(data))
+        }
+      )
       .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
   };
 
-  const showAddPersonForm = () => { setAddingPerson(true); };
-  const hideAddPersonForm = () => { setAddingPerson(false); };
+  const showAddPersonForm = () => {
+    setAddingPerson(true);
+  };
+  const hideAddPersonForm = () => {
+    setAddingPerson(false);
+  };
 
   useEffect(fetchPeople, []);
 
@@ -125,8 +143,8 @@ function People() {
         fetchPeople={fetchPeople}
         setError={setError}
       />
-      {error && <ErrorMessage message={error} />}
-      {people.map((person) => <Person key={person.email} person={person} />)}
+      {error && <ErrorMessage message={error}/>}
+      {people.map((person) => <Person key={person.email} person={person}/>)}
     </div>
   );
 }
