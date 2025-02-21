@@ -1,19 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import {BACKEND_URL} from '../../constants';
+import { BACKEND_URL } from '../../constants';
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users`;
+const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users/`;
 
+// Add Person Form
 function AddPersonForm({
-                         visible,
-                         cancel,
-                         fetchPeople,
-                         setError,
-                       }) {
+  visible,
+  cancel,
+  fetchPeople,
+  setError,
+}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
@@ -74,6 +76,7 @@ AddPersonForm.propTypes = {
   setError: propTypes.func.isRequired,
 };
 
+// Error Message
 function ErrorMessage({message}) {
   return (
     <div className="error-message">
@@ -86,17 +89,18 @@ ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-function Person({person}) {
+// Delete person function
+function Person({person, deletePerson}) {
   const {name, email} = person;
   return (
-    <Link to={`/people/${email}`}>
-      <div className="person-container">
+    <div className="person-container">
+      <Link to={`/people/${email}`}>
         <h2>{name}</h2>
-        <p>
-          Email: {email}
-        </p>
-      </div>
-    </Link>
+        <p>Email: {email}</p>
+      </Link>
+      {/* Add the Delete Button */}
+      <button onClick={() => deletePerson(email)}>X</button> {/* Button to delete person */}
+    </div>
   );
 }
 
@@ -105,34 +109,52 @@ Person.propTypes = {
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
   }).isRequired,
+  deletePerson: propTypes.func.isRequired,
 };
 
+// Function to Convert People Data to Array
 function peopleObjectToArray(Data) {
   const keys = Object.keys(Data);
   const people = keys.map((key) => Data[key]);
   return people;
 }
 
+// Main People Component
 function People() {
   const [error, setError] = useState('');
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
 
+  // Fetch People Data
   const fetchPeople = () => {
     axios.get(PEOPLE_READ_ENDPOINT)
       .then(
         ({data}) => {
-          setPeople(peopleObjectToArray(data))
+          setPeople(peopleObjectToArray(data));
         }
       )
       .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
   };
 
+  // Show Add Person Form
   const showAddPersonForm = () => {
     setAddingPerson(true);
   };
+
+  // Hide Add Person Form
   const hideAddPersonForm = () => {
     setAddingPerson(false);
+  };
+
+  // Delete Person Function
+  const deletePerson = (email) => {
+    axios.delete(`${PEOPLE_DELETE_ENDPOINT}${email}`)
+      .then(() => {
+        fetchPeople(); // Re-fetch people after deletion
+      })
+      .catch((error) => {
+        setError(`There was a problem deleting the person. ${error}`);
+      });
   };
 
   useEffect(fetchPeople, []);
@@ -140,9 +162,7 @@ function People() {
   return (
     <div className="wrapper">
       <header>
-        <h1>
-          View All People
-        </h1>
+        <h1>View All People</h1>
         <button type="button" onClick={showAddPersonForm}>
           Add a Person
         </button>
@@ -153,8 +173,10 @@ function People() {
         fetchPeople={fetchPeople}
         setError={setError}
       />
-      {error && <ErrorMessage message={error}/>}
-      {people.map((person) => <Person key={person.email} person={person}/>)}
+      {error && <ErrorMessage message={error} />}
+      {people.map((person) => (
+        <Person key={person.email} person={person} deletePerson={deletePerson} />
+      ))}
     </div>
   );
 }
