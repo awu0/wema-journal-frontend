@@ -19,6 +19,7 @@ function AddPersonForm({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
+  const [role, setRole] = useState('');
 
   const changeName = (event) => {
     setName(event.target.value);
@@ -29,6 +30,9 @@ function AddPersonForm({
   const changeAffliation = (event) => {
     setAffiliation(event.target.value);
   };
+  const changeRole = (event) => {
+    setRole(event.target.value);
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -36,7 +40,7 @@ function AddPersonForm({
       name: name,
       email: email,
       affiliation: affiliation,
-      role: ''
+      role: role
     }
     axios.post(PEOPLE_CREATE_ENDPOINT, newPerson)
       .then(fetchPeople)
@@ -65,6 +69,13 @@ function AddPersonForm({
       <input type="text" id="affiliation" onChange={changeAffliation}/>
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>
+
+      <label htmlFor="role">
+        Role
+      </label>
+      <input type="text" id="role" onChange={changeRole}/>
+      <button type="button" onClick={cancel}>Cancel</button>
+      <button type="submit" onClick={addPerson}>Submit</button>
     </form>
   );
 }
@@ -91,12 +102,14 @@ ErrorMessage.propTypes = {
 
 // Delete person function
 function Person({person, deletePerson}) {
-  const {name, email} = person;
+  const {name, email, role, affiliation} = person;
   return (
     <div className="person-container">
       <Link to={`/people/${email}`}>
         <h2>{name}</h2>
         <p>Email: {email}</p>
+        <p>Role: {role || 'N/A'}</p>
+        <p>Affiliation: {affiliation || 'N/A'}</p>
       </Link>
       {/* Add the Delete Button */}
       <button onClick={() => deletePerson(email)}>X</button> {/* Button to delete person */}
@@ -108,6 +121,8 @@ Person.propTypes = {
   person: propTypes.shape({
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
+    role: propTypes.string,         
+    affiliation: propTypes.string   
   }).isRequired,
   deletePerson: propTypes.func.isRequired,
 };
