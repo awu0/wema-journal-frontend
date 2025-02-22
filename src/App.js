@@ -12,6 +12,7 @@ import People from './Components/People';
 import { PersonPage } from "./Components/People/PersonPage";
 import About from './Components/About';
 import Home from './Components/Home';
+import Submissions from './Components/Submissions';
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
         
         {/* Dynamic route for individual person */}
         <Route path="people/:email" element={<PersonPage />} />
+
+        {/* Submissions route */}
+        <Route path="submissions" element={<Submissions />} />
 
         {/* About page route */}
         <Route path="about" element={<About />} /> {/* Add About route */}

@@ -5,7 +5,7 @@ function Home() {
     return (
         <div className="home-container">
         <h1>Our Mission</h1>
-        <p>Submit Journals</p>
+        <p>Journals</p>
         </div>
     );
 }
