@@ -11,6 +11,7 @@ import Navbar from './Components/Navbar';
 import People from './Components/People';
 import { PersonPage } from "./Components/People/PersonPage";
 import About from './Components/About';
+import Home from './Components/Home';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         {/* Home page setup */}
         {/* For a different home page, you can add an index route here */}
         {/* <Route index element={<Home />} /> */}
+        <Route path="home" element={<Home />} />
 
         {/* People list route */}
         <Route path="people" element={<People />} />
