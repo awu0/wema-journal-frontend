@@ -56,6 +56,12 @@ function AddPersonForm({
         console.log(error.toJSON())
         setError(`There was a problem adding the person. ${error}`);
       });
+    
+    // clear the form
+    setName('')
+    setEmail('')
+    setAffiliation('')
+    setRole('')
   };
 
   if (!visible) return null;
@@ -69,12 +75,12 @@ function AddPersonForm({
       <label htmlFor="email">
         Email
       </label>
-      <input required type="text" id="email" onChange={changeEmail}/>
+      <input required type="text" id="email" value={email} onChange={changeEmail}/>
 
       <label htmlFor="affiliation">
         Affiliation
       </label>
-      <input type="text" id="affiliation" onChange={changeAffliation}/>
+      <input type="text" id="affiliation" value={affiliation} onChange={changeAffliation}/>
 
       <label htmlFor="role">
         Role
