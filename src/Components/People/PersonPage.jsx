@@ -41,7 +41,7 @@ export function PersonPage() {
             <p>Name: {person.name}</p>
             <p>Email: {person.email}</p>
             {/* Roles aren't getting the list */}
-            <p>Role: {person.roles}</p>
+            <p>Roles: {person.roles}</p>
             <p>Affiliation: {person.affiliation}</p>
           </>
       )}
