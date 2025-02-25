@@ -9,6 +9,14 @@ const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users/`;
 
+const roles = [
+  { label: "Author", value: "author" },
+  { label: "Referee", value: "referee" },
+  { label: "Editor", value: "editor" },
+  { label: "Consulting Editor", value: "consulting editor" },
+  { label: "Managing Editor", value: "managing editor" },
+];
+
 // Add Person Form
 function AddPersonForm({
   visible,
@@ -71,8 +79,14 @@ function AddPersonForm({
       <label htmlFor="role">
         Role
       </label>
-      <input type="text" id="role" onChange={changeRole}/>
-      
+      <select id="role" value={role} onChange={changeRole}>
+        {roles.map((r) => (
+          <option key={r.value} value={r.value}>
+            {r.label}
+          </option>
+        ))}
+      </select>
+
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>
     </form>
