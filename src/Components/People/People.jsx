@@ -22,6 +22,7 @@ function AddPersonForm({
   visible,
   cancel,
   fetchPeople,
+  setSuccess,
   setError,
 }) {
   const [name, setName] = useState('');
@@ -52,16 +53,20 @@ function AddPersonForm({
     }
     axios.post(PEOPLE_CREATE_ENDPOINT, newPerson)
       .then(fetchPeople)
+      .then(() => {
+        // clear the form
+        setName('')
+        setEmail('')
+        setAffiliation('')
+        setRole('')    
+        
+        // set the success message
+        setSuccess(`Successfully added ${newPerson.name}`)
+      })
       .catch((error) => {
         console.log(error.toJSON())
         setError(`There was a problem adding the person. ${error}`);
       });
-    
-    // clear the form
-    setName('')
-    setEmail('')
-    setAffiliation('')
-    setRole('')
   };
 
   if (!visible) return null;
@@ -103,7 +108,21 @@ AddPersonForm.propTypes = {
   visible: propTypes.bool.isRequired,
   cancel: propTypes.func.isRequired,
   fetchPeople: propTypes.func.isRequired,
+  setSuccess: propTypes.func.isRequired,
   setError: propTypes.func.isRequired,
+};
+
+// Success Message
+const SuccessMessage = ({message}) => {
+  return <div>
+    <div className="success-message">
+      {message}
+    </div> 
+  </div>
+}
+
+SuccessMessage.propTypes = {
+  message: propTypes.string.isRequired,
 };
 
 // Error Message
@@ -155,6 +174,7 @@ function peopleObjectToArray(Data) {
 
 // Main People Component
 function People() {
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
@@ -205,8 +225,10 @@ function People() {
         visible={addingPerson}
         cancel={hideAddPersonForm}
         fetchPeople={fetchPeople}
+        setSuccess={setSuccess}
         setError={setError}
       />
+      {success && <SuccessMessage message={success} />}
       {error && <ErrorMessage message={error} />}
       {people.map((person) => (
         <Person key={person.email} person={person} deletePerson={deletePerson} />

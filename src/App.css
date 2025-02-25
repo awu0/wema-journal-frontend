@@ -45,6 +45,14 @@ button:hover {
   color: var(--background-color);
 }
 
+.success-message {
+  border: 2px solid var(--cambridge-blue);
+  background-color: var(--cambridge-blue);
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: 5px;
+}
+
 .error-message {
   border: 2px solid var(--buff);
   padding: 1em;
