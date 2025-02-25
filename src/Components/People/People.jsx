@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-import { BACKEND_URL } from '../../constants';
+import {BACKEND_URL} from '../../constants';
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users/`;
 
 const roles = [
-  { label: "Author", value: "author" },
-  { label: "Referee", value: "referee" },
-  { label: "Editor", value: "editor" },
-  { label: "Consulting Editor", value: "consulting editor" },
-  { label: "Managing Editor", value: "managing editor" },
+  {label: "Author", value: "author"},
+  {label: "Referee", value: "referee"},
+  {label: "Editor", value: "editor"},
+  {label: "Consulting Editor", value: "consulting editor"},
+  {label: "Managing Editor", value: "managing editor"},
 ];
 
 // Add Person Form
 function AddPersonForm({
-  visible,
-  cancel,
-  fetchPeople,
-  setSuccess,
-  setError,
-}) {
+                         visible,
+                         cancel,
+                         fetchPeople,
+                         setSuccess,
+                         setError,
+                       }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
@@ -58,8 +58,8 @@ function AddPersonForm({
         setName('')
         setEmail('')
         setAffiliation('')
-        setRole('')    
-        
+        setRole('')
+
         // set the success message
         setSuccess(`Successfully added ${newPerson.name}`)
       })
@@ -117,7 +117,7 @@ const SuccessMessage = ({message}) => {
   return <div>
     <div className="success-message">
       {message}
-    </div> 
+    </div>
   </div>
 }
 
@@ -140,17 +140,18 @@ ErrorMessage.propTypes = {
 
 // Delete person function
 function Person({person, deletePerson}) {
-  const {name, email, role, affiliation} = person;
+  const {name, email, roles, affiliation} = person;
   return (
     <div className="person-container">
       <Link to={`/people/${email}`}>
         <h2>{name}</h2>
         <p>Email: {email}</p>
-        <p>Role: {role || 'N/A'}</p>
+        <p>Roles: {roles && roles.length > 0 ? roles.join(', ') : 'N/A'}</p>
         <p>Affiliation: {affiliation || 'N/A'}</p>
       </Link>
       {/* Add the Delete Button */}
-      <button onClick={() => deletePerson(email)}>X</button> {/* Button to delete person */}
+      <button onClick={() => deletePerson(email)}>X</button>
+      {/* Button to delete person */}
     </div>
   );
 }
@@ -159,8 +160,8 @@ Person.propTypes = {
   person: propTypes.shape({
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
-    role: propTypes.string,         
-    affiliation: propTypes.string   
+    roles: propTypes.array,
+    affiliation: propTypes.string
   }).isRequired,
   deletePerson: propTypes.func.isRequired,
 };
@@ -168,8 +169,7 @@ Person.propTypes = {
 // Function to Convert People Data to Array
 function peopleObjectToArray(Data) {
   const keys = Object.keys(Data);
-  const people = keys.map((key) => Data[key]);
-  return people;
+  return keys.map((key) => Data[key]);
 }
 
 // Main People Component
@@ -228,10 +228,10 @@ function People() {
         setSuccess={setSuccess}
         setError={setError}
       />
-      {success && <SuccessMessage message={success} />}
-      {error && <ErrorMessage message={error} />}
+      {success && <SuccessMessage message={success}/>}
+      {error && <ErrorMessage message={error}/>}
       {people.map((person) => (
-        <Person key={person.email} person={person} deletePerson={deletePerson} />
+        <Person key={person.email} person={person} deletePerson={deletePerson}/>
       ))}
     </div>
   );

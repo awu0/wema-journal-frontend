@@ -14,7 +14,6 @@ export function PersonPage() {
     axios
       .get(`${PEOPLE_READ_ENDPOINT}/${email}`)
       .then(({ data }) => {
-        console.log(data);
         setPerson(data);
       })
       .catch(() => {
