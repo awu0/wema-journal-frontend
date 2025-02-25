@@ -67,13 +67,12 @@ function AddPersonForm({
         Affiliation
       </label>
       <input type="text" id="affiliation" onChange={changeAffliation}/>
-      <button type="button" onClick={cancel}>Cancel</button>
-      <button type="submit" onClick={addPerson}>Submit</button>
 
       <label htmlFor="role">
         Role
       </label>
       <input type="text" id="role" onChange={changeRole}/>
+      
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>
     </form>
