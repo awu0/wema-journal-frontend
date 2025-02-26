@@ -9,6 +9,10 @@ function Home() {
         navigate('/people');
     };
 
+    const handleViewSubmissions = () => {
+        navigate('/submissions');
+    };
+
     return (
         <div className="home-container">
             <h1>Our Mission</h1>
@@ -20,6 +24,10 @@ function Home() {
             <h2>Meet Our Team</h2>
             <p>Get to know the people who make this platform possible.</p>
             <button className="view-people-btn" onClick={handleViewPeople}>View People</button>
+
+            <h2>View Submissions</h2>
+            <p>Check the list of submitted manuscripts.</p>
+            <button className="view-submissions-btn" onClick={handleViewSubmissions}>View Submissions</button>
         </div>
     );
 }
