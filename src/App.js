@@ -13,6 +13,7 @@ import { PersonPage } from "./Components/People/PersonPage";
 import About from './Components/About';
 import Home from './Components/Home';
 import Submissions from './Components/Submissions';
+import Masthead from './Components/Masthead';
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
 
         {/* Submissions route */}
         <Route path="submissions" element={<Submissions />} />
+
+        {/* Masthead route */}
+        <Route path="masthead" element={<Masthead />} />  {/* Add Masthead route here */}
 
         {/* About page route */}
         <Route path="about" element={<About />} /> {/* Add About route */}
