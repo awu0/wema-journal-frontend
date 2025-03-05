@@ -9,7 +9,7 @@ const Manuscript = (manuscript) => {
     const {title, author, content, publication_date, state} = manuscript
     
     return <div className="person-container">
-        <Link to={`${SUBMISSIONS_READ_ENDPOINT}/${title}`}>
+        <Link to={`manuscripts/${title}`}>
             <h2>Title: {title}</h2>
             <p>Author: {author}</p>
             <p>Content: {content}</p>
