@@ -231,6 +231,9 @@ function People() {
         <button type="button" onClick={showAddPersonForm}>
           Add a Person
         </button>
+        <button type="button" onClick={toggleSortByAffiliation}>
+          Sort by Affiliation {sortByAffiliation ? '(ON)' : '(OFF)'}
+        </button>
       </header>
       <AddPersonForm
         visible={addingPerson}
@@ -241,8 +244,8 @@ function People() {
       />
       {success && <SuccessMessage message={success}/>}
       {error && <ErrorMessage message={error}/>}
-      {people.map((person) => (
-        <Person key={person.email} person={person} deletePerson={deletePerson}/>
+      {sortedPeople.map((person) => (
+        <Person key={person.email} person={person} deletePerson={deletePerson} />
       ))}
     </div>
   );
