@@ -8,14 +8,8 @@ import {BACKEND_URL} from '../../constants';
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users/`;
+const ROLES_ENDPOINT = `${BACKEND_URL}/roles`
 
-const roles = [
-  {label: "Author", value: "author"},
-  {label: "Referee", value: "referee"},
-  {label: "Editor", value: "editor"},
-  {label: "Consulting Editor", value: "consulting editor"},
-  {label: "Managing Editor", value: "managing editor"},
-];
 
 // Add Person Form
 function AddPersonForm({
@@ -24,24 +18,17 @@ function AddPersonForm({
                          fetchPeople,
                          setSuccess,
                          setError,
+                         roleOptions,
                        }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
   const [role, setRole] = useState('');
 
-  const changeName = (event) => {
-    setName(event.target.value);
-  };
-  const changeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-  const changeAffliation = (event) => {
-    setAffiliation(event.target.value);
-  };
-  const changeRole = (event) => {
-    setRole(event.target.value);
-  };
+  const changeName = (event) => { setName(event.target.value); };
+  const changeEmail = (event) => { setEmail(event.target.value); };
+  const changeAffliation = (event) => { setAffiliation(event.target.value); };
+  const changeRole = (event) => { setRole(event.target.value); };
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -90,10 +77,17 @@ function AddPersonForm({
       <label htmlFor="role">
         Role
       </label>
-      <select id="role" value={role} onChange={changeRole}>
-        {roles.map((r) => (
-          <option key={r.value} value={r.value}>
-            {r.label}
+      <select
+        required
+        name="role"
+        value={role}
+        onChange={changeRole}
+        style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} // Basic styling
+      >
+        <option value="" disabled>Select a role</option> {/* Default option */}
+        {Object.keys(roleOptions).map((code) => (
+          <option key={code} value={code}>
+            {roleOptions[code]}
           </option>
         ))}
       </select>
@@ -110,6 +104,7 @@ AddPersonForm.propTypes = {
   fetchPeople: propTypes.func.isRequired,
   setSuccess: propTypes.func.isRequired,
   setError: propTypes.func.isRequired,
+  roleOptions: propTypes.object.isRequired,
 };
 
 // Success Message
@@ -138,7 +133,7 @@ ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-// Delete person function
+
 function Person({person, deletePerson}) {
   const {name, email, roles, affiliation} = person;
   return (
@@ -160,7 +155,7 @@ Person.propTypes = {
   person: propTypes.shape({
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
-    roles: propTypes.array,
+    roles: propTypes.arrayOf(propTypes.string).isRequired,
     affiliation: propTypes.string
   }).isRequired,
   deletePerson: propTypes.func.isRequired,
@@ -179,6 +174,8 @@ function People() {
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
   const [sortByAffiliation, setSortByAffiliation] = useState(false);
+  const [roleMap, setRoleMap] = useState({});
+
 
   // Fetch People Data
   const fetchPeople = () => {
@@ -190,6 +187,12 @@ function People() {
       )
       .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
   };
+
+  const getRoles = () => {
+    axios.get(ROLES_ENDPOINT)
+      .then(({ data }) => setRoleMap(data))
+      .catch((error) => { setError(`There was a problem getting roles. ${error}`); });
+  }
 
   // Show Add Person Form
   const showAddPersonForm = () => {
@@ -218,6 +221,7 @@ function People() {
   };
 
   useEffect(fetchPeople, []);
+  useEffect(getRoles, []);
 
   const sortedPeople = [...people].sort((a, b) => {
     if (!sortByAffiliation) return 0;
@@ -241,9 +245,20 @@ function People() {
         fetchPeople={fetchPeople}
         setSuccess={setSuccess}
         setError={setError}
+        roleOptions={roleMap}
       />
       {success && <SuccessMessage message={success}/>}
       {error && <ErrorMessage message={error}/>}
+      {
+      people.map((person) => 
+        <Person
+          key={person.email}
+          person={person}
+          fetchPeople={fetchPeople}
+          roleMap={roleMap}
+        />
+      )
+      }
       {sortedPeople.map((person) => (
         <Person key={person.email} person={person} deletePerson={deletePerson} />
       ))}
