@@ -178,6 +178,7 @@ function People() {
   const [error, setError] = useState('');
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
+  const [sortByAffiliation, setSortByAffiliation] = useState(false);
 
   // Fetch People Data
   const fetchPeople = () => {
@@ -211,7 +212,17 @@ function People() {
       });
   };
 
+  //Toggle Sort By Affiliation
+  const toggleSortByAffiliation = () => {
+    setSortByAffiliation((prev) => !prev);
+  };
+
   useEffect(fetchPeople, []);
+
+  const sortedPeople = [...people].sort((a, b) => {
+    if (!sortByAffiliation) return 0;
+    return (a.affiliation || '').localeCompare(b.affiliation || '');
+  });
 
   return (
     <div className="wrapper">
