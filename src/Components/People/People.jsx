@@ -7,7 +7,7 @@ import {BACKEND_URL} from '../../constants';
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users`;
-const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users/`;
+const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users`;
 const ROLES_ENDPOINT = `${BACKEND_URL}/roles`
 
 
@@ -247,7 +247,7 @@ function People() {
 
   // Delete Person Function
   const deletePerson = (email) => {
-    axios.delete(`${PEOPLE_DELETE_ENDPOINT}${email}`)
+    axios.delete(`${PEOPLE_DELETE_ENDPOINT}/${email}`)
       .then(() => {
         fetchPeople(); // Re-fetch people after deletion
       })
