@@ -90,12 +90,12 @@ function AddPersonForm({
         name="role"
         value={role}
         onChange={changeRole}
-        style={{padding: '8px', borderRadius: '4px', border: '1px solid #ccc'}} // Basic styling
+        style={{padding: '8px', borderRadius: '4px', border: '1px solid #ccc'}}
       >
         <option value="" disabled>Select a role</option>
         {/* Default option */}
         {Object.keys(roleOptions).map((code) => (
-          <option key={code} value={code}>
+          <option key={code}>
             {roleOptions[code]}
           </option>
         ))}
