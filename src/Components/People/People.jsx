@@ -25,10 +25,18 @@ function AddPersonForm({
   const [affiliation, setAffiliation] = useState('');
   const [role, setRole] = useState('');
 
-  const changeName = (event) => { setName(event.target.value); };
-  const changeEmail = (event) => { setEmail(event.target.value); };
-  const changeAffliation = (event) => { setAffiliation(event.target.value); };
-  const changeRole = (event) => { setRole(event.target.value); };
+  const changeName = (event) => {
+    setName(event.target.value);
+  };
+  const changeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+  const changeAffliation = (event) => {
+    setAffiliation(event.target.value);
+  };
+  const changeRole = (event) => {
+    setRole(event.target.value);
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -82,9 +90,10 @@ function AddPersonForm({
         name="role"
         value={role}
         onChange={changeRole}
-        style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} // Basic styling
+        style={{padding: '8px', borderRadius: '4px', border: '1px solid #ccc'}} // Basic styling
       >
-        <option value="" disabled>Select a role</option> {/* Default option */}
+        <option value="" disabled>Select a role</option>
+        {/* Default option */}
         {Object.keys(roleOptions).map((code) => (
           <option key={code} value={code}>
             {roleOptions[code]}
@@ -134,24 +143,32 @@ ErrorMessage.propTypes = {
 };
 
 
-function Person({person, deletePerson}) {
+// Function to Convert People Data to Array
+function peopleObjectToArray(Data) {
+  const keys = Object.keys(Data);
+  return keys.map((key) => Data[key]);
+}
+
+
+function PersonRow({person, deletePerson}) {
   const {name, email, roles, affiliation} = person;
+
   return (
-    <div className="person-container">
-      <Link to={`/people/${email}`}>
-        <h2>{name}</h2>
-        <p>Email: {email}</p>
-        <p>Roles: {roles && roles.length > 0 ? roles.join(', ') : 'N/A'}</p>
-        <p>Affiliation: {affiliation || 'N/A'}</p>
-      </Link>
-      {/* Add the Delete Button */}
-      <button onClick={() => deletePerson(email)}>X</button>
-      {/* Button to delete person */}
-    </div>
+    <tr>
+      <td>
+        <Link to={`/people/${email}`}>
+          {name}
+        </Link>
+      </td>
+      <td>{email}</td>
+      <td>{roles && roles.length > 0 ? roles.join(', ') : 'N/A'}</td>
+      <td>{affiliation || 'N/A'}</td>
+      <td><button onClick={() => deletePerson(email)}>X</button></td>
+    </tr>
   );
 }
 
-Person.propTypes = {
+PersonRow.propTypes = {
   person: propTypes.shape({
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
@@ -161,22 +178,44 @@ Person.propTypes = {
   deletePerson: propTypes.func.isRequired,
 };
 
-// Function to Convert People Data to Array
-function peopleObjectToArray(Data) {
-  const keys = Object.keys(Data);
-  return keys.map((key) => Data[key]);
-}
-
 // Main People Component
 function People() {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
-  const [sortByAffiliation, setSortByAffiliation] = useState(false);
+
   const [roleMap, setRoleMap] = useState({});
+  
+  const [sortConfig, setSortConfig] = useState({key: "name",  direction: "asc"});
 
+  const handleSort = (key) => {
+    let direction = "asc";
 
+    // toggle sorting order if the same column is clicked again
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+
+    setSortConfig({ key, direction });
+  };
+  
+  const sortedPeople = [...people].sort((a, b) => {
+    let personA = a[sortConfig.key];
+    let personB = b[sortConfig.key];
+
+    if (typeof personA === "string") {
+      personA = personA.toLowerCase();
+      personB = personB.toLowerCase();
+    }
+
+    if (personA < personB) return sortConfig.direction === "asc" ? -1 : 1;
+    if (personA > personB) return sortConfig.direction === "asc" ? 1 : -1;
+    
+    return 0;
+  }) 
+  
   // Fetch People Data
   const fetchPeople = () => {
     axios.get(PEOPLE_READ_ENDPOINT)
@@ -190,8 +229,10 @@ function People() {
 
   const getRoles = () => {
     axios.get(ROLES_ENDPOINT)
-      .then(({ data }) => setRoleMap(data))
-      .catch((error) => { setError(`There was a problem getting roles. ${error}`); });
+      .then(({data}) => setRoleMap(data))
+      .catch((error) => {
+        setError(`There was a problem getting roles. ${error}`);
+      });
   }
 
   // Show Add Person Form
@@ -215,18 +256,8 @@ function People() {
       });
   };
 
-  //Toggle Sort By Affiliation
-  const toggleSortByAffiliation = () => {
-    setSortByAffiliation((prev) => !prev);
-  };
-
   useEffect(fetchPeople, []);
   useEffect(getRoles, []);
-
-  const sortedPeople = [...people].sort((a, b) => {
-    if (!sortByAffiliation) return 0;
-    return (a.affiliation || '').localeCompare(b.affiliation || '');
-  });
 
   return (
     <div className="wrapper">
@@ -234,9 +265,6 @@ function People() {
         <h1>View All People</h1>
         <button type="button" onClick={showAddPersonForm}>
           Add a Person
-        </button>
-        <button type="button" onClick={toggleSortByAffiliation}>
-          Sort by Affiliation {sortByAffiliation ? '(ON)' : '(OFF)'}
         </button>
       </header>
       <AddPersonForm
@@ -249,19 +277,36 @@ function People() {
       />
       {success && <SuccessMessage message={success}/>}
       {error && <ErrorMessage message={error}/>}
-      {
-      people.map((person) => 
-        <Person
-          key={person.email}
-          person={person}
-          fetchPeople={fetchPeople}
-          roleMap={roleMap}
-        />
-      )
-      }
-      {sortedPeople.map((person) => (
-        <Person key={person.email} person={person} deletePerson={deletePerson} />
-      ))}
+
+      <table className={"people-table"}>
+        <thead>
+        <tr>
+          <td
+            onClick={() => handleSort("name")}>Name {sortConfig.key === "name" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+          <td
+            onClick={() => handleSort("email")}>Email {sortConfig.key === "email" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+          <td
+            onClick={() => handleSort("roles")}>Roles {sortConfig.key === "roles" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+          <td
+            onClick={() => handleSort("affiliation")}>Affiliation {sortConfig.key === "affiliation" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+          <td>Delete</td>
+        </tr>
+        </thead>
+        <tbody>
+        {
+          sortedPeople.map((person) =>
+            <PersonRow
+              key={person.email}
+              person={person}
+              fetchPeople={fetchPeople}
+              roleMap={roleMap}
+              deletePerson={deletePerson}
+            />
+          )
+        }
+        </tbody>
+      </table>
+
     </div>
   );
 }

@@ -31,11 +31,11 @@ html {
 
 button {
   font-size: 1.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.25rem .75rem;
   cursor: pointer;
 
   border-radius: 5px;
-  border: 2px solid var(--accent-color);
+  border: 1px solid var(--accent-color);
   color: var(--accent-color);
   background: var(--background-color);
 }
@@ -172,3 +172,16 @@ nav a:focus {
   margin: 0;
   font-size: 1.5rem;
 }
+
+table.people-table {
+  width: 100%;
+  border: 1px solid var(--accent-color);
+  border-collapse: collapse;
+}
+
+.people-table th, .people-table td {
+  border: 1px solid var(--accent-color);
+  padding: 3px; 
+}
+
+.people-table tr:hover {background-color: #ddd;}
