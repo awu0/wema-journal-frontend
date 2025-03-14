@@ -8,6 +8,7 @@ const PAGES = [
   { label: 'View All Submissions', destination: '/submissions' },
   { label: 'Masthead', destination: '/masthead' },
   { label: 'About', destination: '/about' },
+  { label: 'Login', destination: '/login' },
 ];
 
 function NavLink({ page }) {

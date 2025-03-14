@@ -14,6 +14,7 @@ import About from './Components/About';
 import Home from './Components/Home';
 import Submissions from './Components/Submissions';
 import Masthead from './Components/Masthead';
+import Login from './Login/Login';
 
 function App() {
   return (
@@ -35,10 +36,13 @@ function App() {
         <Route path="submissions" element={<Submissions />} />
 
         {/* Masthead route */}
-        <Route path="masthead" element={<Masthead />} />  {/* Add Masthead route here */}
+        <Route path="masthead" element={<Masthead />} />
 
         {/* About page route */}
-        <Route path="about" element={<About />} /> {/* Add About route */}
+        <Route path="about" element={<About />} />
+
+        {/* About login route */}
+        <Route path="login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
