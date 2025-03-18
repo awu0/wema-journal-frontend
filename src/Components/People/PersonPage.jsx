@@ -23,6 +23,8 @@ export function PersonPage() {
         setError(`There was a problem getting ${email}. They might not exist.`);
       });
   };
+  
+  const updatePerson = (email) => {return email}
 
   const deletePerson = (email) => {
     axios.delete(`${PEOPLE_DELETE_ENDPOINT}/${email}`)
@@ -50,15 +52,18 @@ export function PersonPage() {
       {/* Display person information if no error */}
 
       {person && (
-        <>
+        <div className={'person-container'}>
           <p>Name: {person.name}</p>
           <p>Email: {person.email}</p>
           {/* Roles aren't getting the list */}
           <p>Roles: {person.roles}</p>
           <p>Affiliation: {person.affiliation}</p>
-          
-          <button onClick={() => deletePerson(person.email)}>X</button>
-        </>
+
+          <div>
+            <button onClick={() => updatePerson(person.email)}>X</button>
+            <button onClick={() => deletePerson(person.email)}>X</button>
+          </div>
+        </div>
       )}
     </div>
   );
