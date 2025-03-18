@@ -262,7 +262,7 @@ function People() {
   return (
     <div className="wrapper">
       <header>
-        <h1>View All People</h1>
+        <h1>View People</h1>
         <button type="button" onClick={showAddPersonForm}>
           Add a Person
         </button>

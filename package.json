@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "engines" : {
+  "engines": {
     "node": "^23.5.0",
     "npm": "^10.9.2"
   },
