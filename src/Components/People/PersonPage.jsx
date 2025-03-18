@@ -4,6 +4,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../../constants";
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
+const PEOPLE_UPDATE_ENDPOINT = `${BACKEND_URL}/users`;
 const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users`;
 
 export function PersonPage() {
@@ -24,7 +25,15 @@ export function PersonPage() {
       });
   };
   
-  const updatePerson = (email) => {return email}
+  const updatePerson = (email) => {
+    axios.put(`${PEOPLE_UPDATE_ENDPOINT}/${email}`)
+      .then(() => {
+        console.log("hiIIIII")
+      })
+      .catch(() => {
+        setError(`There was a problem updating the person. ${error}`);
+      })
+  }
 
   const deletePerson = (email) => {
     axios.delete(`${PEOPLE_DELETE_ENDPOINT}/${email}`)
@@ -60,7 +69,7 @@ export function PersonPage() {
           <p>Affiliation: {person.affiliation}</p>
 
           <div>
-            <button onClick={() => updatePerson(person.email)}>X</button>
+            <button onClick={() => updatePerson(person.email)}>Update</button>
             <button onClick={() => deletePerson(person.email)}>X</button>
           </div>
         </div>
