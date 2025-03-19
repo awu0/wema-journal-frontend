@@ -160,11 +160,11 @@ nav a:focus {
 
 .person-container {
   border: 2px solid var(--accent-color);
-  margin: 1rem 0;
-  padding: 2rem;
-  display: flex;
-  justify-content: space-between;
+  /*margin: 1rem 0;*/
+  /*padding: 2rem;*/
   border-radius: 5px;
+  display: grid;
+  place-items: center;
 }
 
 .person-container p,
