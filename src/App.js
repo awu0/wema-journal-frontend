@@ -13,6 +13,7 @@ import { PersonPage } from "./Components/People/PersonPage";
 import About from './Components/About';
 import Home from './Components/Home';
 import Manuscripts from './Components/Manuscripts';
+import Submissions from './Components/Submissions';
 import Masthead from './Components/Masthead';
 import Login from './Login/Login';
 
@@ -32,8 +33,11 @@ function App() {
         {/* Dynamic route for individual person */}
         <Route path="people/:email" element={<PersonPage />} />
 
-        {/* Submissions route */}
+        {/* Manuscripts route */}
         <Route path="Manuscripts" element={<Manuscripts />} />
+
+        {/* Submissions route */}
+        <Route path="Submissions" element={<Submissions />} />
 
         {/* Masthead route */}
         <Route path="masthead" element={<Masthead />} />
