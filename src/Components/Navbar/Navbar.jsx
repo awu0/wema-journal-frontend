@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const PAGES = [
   { label: 'Home', destination: '/home' },
   { label: 'View People', destination: '/people' },
-  { label: 'View Submissions', destination: '/submissions' },
+  { label: 'View Manuscripts', destination: '/manuscripts' },
   { label: 'Masthead', destination: '/masthead' },
   { label: 'About', destination: '/about' },
   { label: 'Login', destination: '/login' },

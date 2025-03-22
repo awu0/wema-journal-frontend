@@ -4,6 +4,6 @@ import axios from "axios";
 import { BACKEND_URL } from "../../constants";
 
 
-export function SubmissionPage() {
+export function ManuscriptsPage() {
 
 }

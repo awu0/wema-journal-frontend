@@ -12,7 +12,7 @@ import People from './Components/People';
 import { PersonPage } from "./Components/People/PersonPage";
 import About from './Components/About';
 import Home from './Components/Home';
-import Submissions from './Components/Submissions';
+import Manuscripts from './Components/Manuscripts';
 import Masthead from './Components/Masthead';
 import Login from './Login/Login';
 
@@ -33,7 +33,7 @@ function App() {
         <Route path="people/:email" element={<PersonPage />} />
 
         {/* Submissions route */}
-        <Route path="submissions" element={<Submissions />} />
+        <Route path="Manuscripts" element={<Manuscripts />} />
 
         {/* Masthead route */}
         <Route path="masthead" element={<Masthead />} />

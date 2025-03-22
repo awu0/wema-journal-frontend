@@ -2,13 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {BACKEND_URL} from "../../constants";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import './Manuscripts.css';
 
-const SUBMISSIONS_READ_ENDPOINT = `${BACKEND_URL}/manuscripts`;
+const MANUSCRIPTS_READ_ENDPOINT = `${BACKEND_URL}/manuscripts`;
 
 const Manuscript = (manuscript) => {
     const {title, author, content, publication_date, state} = manuscript
     
-    return <div className="person-container">
+    return <div className="manuscript-container">
         <Link to={`manuscripts/${title}`}>
             <h2>Title: {title}</h2>
             <p>Author: {author}</p>
@@ -19,13 +20,13 @@ const Manuscript = (manuscript) => {
     </div>
 }
 
-function Submissions() {
+function ViewManuscripts() {
     const [manuscripts, setManuscripts] = useState([]);
     const [error, setError] = useState('');
 
     // fetch manuscript Data
     const fetchManuscripts = () => {
-        axios.get(SUBMISSIONS_READ_ENDPOINT)
+        axios.get(MANUSCRIPTS_READ_ENDPOINT)
           .then(
             ({data}) => {
                 setManuscripts(data);
@@ -45,4 +46,4 @@ function Submissions() {
 }
 
 
-export default Submissions;
+export default ViewManuscripts;
