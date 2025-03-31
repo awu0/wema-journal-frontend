@@ -1,0 +1,90 @@
+.submissions-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+  }
+  
+.submissions-page h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #28a745;
+    display: inline-block;
+  }
+  
+.submission-form {
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+.form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+  }
+  
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+.form-group input[type="text"]:focus,
+.form-group input[type="date"]:focus,
+.form-group textarea:focus {
+    border-color: #28a745;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+  }
+  
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+  
+.submit-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  
+  
+.submission-status {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+.submission-status[data-status="Submission successful!"] {
+    background-color: #28a745;
+    color: white;
+  }
+  
+.submission-status[data-status^="Submission failed"] {
+    background-color: #dc3545;
+    color: white;
+  }

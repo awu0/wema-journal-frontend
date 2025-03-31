@@ -13,7 +13,6 @@ function Submissions() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!title || !author || !content || !publicationDate) {
       setSubmissionStatus('Please fill out all fields.');
       return;
@@ -46,8 +45,23 @@ function Submissions() {
 
   return (
     <div className="submissions-page">
-      <h1>Submit Your Manuscript</h1>
 
+      {/* New Guidelines Section */}
+      <div className="submission-guidelines">
+        <h1>WEMA Submission Guidelines</h1>
+        <div className="guidelines-content">
+          <p>Please review the following requirements before submitting to WEMA Journal:</p>
+          <ul>
+            <li>Manuscripts must be original, unpublished work</li>
+            <li>Title should be concise and descriptive</li>
+            <li>Content must be properly formatted</li>
+            <li>Include all author names</li>
+            <li>Select the publication date</li>
+          </ul>
+        </div>
+      </div>
+
+      <h1>Submit Your Manuscript</h1>
       {/* Submission Form */}
       <form onSubmit={handleSubmit} className="submission-form">
         <div className="form-group">
