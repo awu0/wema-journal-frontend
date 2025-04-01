@@ -202,8 +202,8 @@ function People() {
   };
   
   const sortedPeople = [...people].sort((a, b) => {
-    let personA = a[sortConfig.key];
-    let personB = b[sortConfig.key];
+    let personA = a[sortConfig.key] ?? "";
+    let personB = b[sortConfig.key] ?? "";
 
     if (typeof personA === "string") {
       personA = personA.toLowerCase();

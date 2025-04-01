@@ -42,8 +42,8 @@ function ViewManuscripts() {
   };
 
   const sortedManuscripts = [...manuscripts].sort((a, b) => {
-    let manuscriptA = a[sortConfig.key];
-    let manuscriptB = b[sortConfig.key];
+    let manuscriptA = a[sortConfig.key] ?? "";
+    let manuscriptB = b[sortConfig.key] ?? "";
 
     if (typeof manuscriptA === "string") {
       manuscriptA = manuscriptA.toLowerCase();
