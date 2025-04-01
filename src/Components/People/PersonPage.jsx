@@ -10,6 +10,7 @@ const ROLES_ENDPOINT = `${BACKEND_URL}/roles`
 
 export function PersonPage() {
   const navigate = useNavigate();
+  
   const {email: initialEmail} = useParams();
 
   const [person, setPerson] = useState(null);
@@ -27,9 +28,11 @@ export function PersonPage() {
     setName(event.target.value);
   };
   const changeEmail = (event) => {
+    console.log(event.target.value);
     setEmail(event.target.value);
+    console.log(email);
   };
-  const changeAffliation = (event) => {
+  const changeAffiliation = (event) => {
     setAffiliation(event.target.value);
   };
   const changeRole = (event) => {
@@ -87,7 +90,7 @@ export function PersonPage() {
 
   useEffect(() => {
     fetchPerson();
-  }, [email]);
+  }, [initialEmail]);
 
   useEffect(getRoles, []);
 
@@ -119,12 +122,12 @@ export function PersonPage() {
             <label htmlFor="email">
               Email
             </label>
-            <input required type="text" id="email" value={email} onChange={changeEmail}/>
+            <input required disabled={true} type="text" id="email" value={email} onChange={changeEmail}/>
 
             <label htmlFor="affiliation">
               Affiliation
             </label>
-            <input type="text" id="affiliation" value={affiliation} onChange={changeAffliation}/>
+            <input type="text" id="affiliation" value={affiliation} onChange={changeAffiliation}/>
 
             <label htmlFor="role">
               Role
