@@ -1,47 +1,36 @@
-.manuscript-container {
-    background-color: #f9f9f9;
-    border: 1px solid #e0e0e0;
+.wrapper {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    padding: 16px;
-    margin: 12px auto;
-    transition: box-shadow 0.3s ease;
-    width: 80%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
 }
 
-.manuscript-container h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 8px;
+.people-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
 }
 
-.manuscript-container a {
-    text-decoration: none;
-    color: #007bff;
+.people-table thead {
+    background-color: #71B986;
+    text-align: left;
 }
 
-.manuscript-container a:hover {
-    color: #0056b3;
-    text-decoration: underline;
+.people-table th, 
+.people-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
 }
 
-.manuscript-container p {
-    font-size: 1rem;
-    color: #555;
-    margin: 4px 0;
+.people-table thead td {
+    cursor: pointer;
+    font-weight: bold;
+    position: relative;
 }
 
-.error {
-    color: red;
-    font-size: 1.2rem;
-    margin: 16px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
+.people-table thead td:hover {
+    background-color: #71B986;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import './Navbar.css';
 
 const PAGES = [
   { label: 'Home', destination: '/home' },
@@ -15,11 +16,14 @@ const PAGES = [
 function NavLink({ page }) {
   const { label, destination } = page;
   return (
-    <li>
-      <Link to={destination}>{label}</Link>
+    <li className="nav-item">
+      <Link to={destination} className="nav-link">
+        {label}
+      </Link>
     </li>
   );
 }
+
 NavLink.propTypes = {
   page: propTypes.shape({
     label: propTypes.string.isRequired,
@@ -29,9 +33,11 @@ NavLink.propTypes = {
 
 function Navbar() {
   return (
-    <nav>
-      <ul className="wrapper">
-        {PAGES.map((page) => <NavLink key={page.destination} page={page} />)}
+    <nav className="navbar">
+      <ul className="nav-list">
+        {PAGES.map((page) => (
+          <NavLink key={page.destination} page={page} />
+        ))}
       </ul>
     </nav>
   );
