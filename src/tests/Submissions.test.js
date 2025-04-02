@@ -19,4 +19,15 @@ describe('Submissions Component', () => {
             expect(screen.getByText('Title: Title 2')).toBeInTheDocument();
         });
     });
+
+    it('shows error message when API call fails', async () => {
+        const mockError = 'Network Error';
+        axios.get.mockRejectedValueOnce(new Error(mockError));
+
+        render(<Submissions />);
+
+        await waitFor(() => {
+            expect(screen.getByText(/There was a problem retrieving the list of people/)).toBeInTheDocument();
+        });
+    });
 });
