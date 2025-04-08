@@ -22,12 +22,12 @@ function Submissions() {
       title,
       author,
       content,
-      publicationDate,
+      "publication_date": publicationDate,
     };
 
     try {
       setSubmissionStatus('Submitting...');
-      await axios.post(`${BACKEND_URL}/submissions`, submissionData, {
+      await axios.post(`${BACKEND_URL}/manuscripts`, submissionData, {
         headers: {
           'Content-Type': 'application/json',
         },
