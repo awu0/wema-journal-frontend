@@ -75,12 +75,12 @@ export function PersonPage() {
     axios.patch(`${PEOPLE_UPDATE_ENDPOINT}/${email}`, updatedPerson)
       .then(() => {
         setPerson(updatedPerson);
+        setEditing(false);
+        fetchPerson();
       })
       .catch(() => {
         setError(`There was a problem updating the person. ${error}`);
       })
-    
-    setEditing(false);
   }
 
   const deletePerson = (email) => {
@@ -109,7 +109,7 @@ export function PersonPage() {
 
   return (
     <div className={'wrapper'}>
-      <h1>Person Information</h1>
+      <h1>{person.name}</h1>
       {/* Handling error */}
       {error ? <p>{error}</p> : null}
       {/* Display person information if no error */}
@@ -119,10 +119,9 @@ export function PersonPage() {
 
         {!editing && (
           <div>
-            <p>Name: {person.name}</p>
             <p>Email: {person.email}</p>
             {/* Roles aren't getting the list */}
-            <p>Roles: {person.role}</p>
+            <p>Roles: {person.roles && person.roles.length > 0 ? person.roles.join(', ') : 'N/A'}</p>
             <p>Affiliation: {person.affiliation}</p>
           </div>
         )}
