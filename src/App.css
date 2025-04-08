@@ -163,8 +163,8 @@ nav a:focus {
   /*margin: 1rem 0;*/
   /*padding: 2rem;*/
   border-radius: 5px;
-  display: grid;
-  place-items: center;
+  /*display: grid;*/
+  /*place-items: center;*/
 }
 
 .person-container p,

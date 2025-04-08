@@ -10,7 +10,7 @@ const ROLES_ENDPOINT = `${BACKEND_URL}/roles`
 
 export function PersonPage() {
   const navigate = useNavigate();
-  
+
   const {email: initialEmail} = useParams();
 
   const [person, setPerson] = useState(null);
@@ -21,6 +21,9 @@ export function PersonPage() {
   const [role, setRole] = useState('');
 
   const [roleOptions, setRoleOptions] = useState({});
+
+  // used to display items when updating the person
+  const [editing, setEditing] = useState(false);
 
   const [error, setError] = useState(null);
 
@@ -71,11 +74,13 @@ export function PersonPage() {
     }
     axios.patch(`${PEOPLE_UPDATE_ENDPOINT}/${email}`, updatedPerson)
       .then(() => {
-        console.log("hiIIIII")
+        setPerson(updatedPerson);
       })
       .catch(() => {
         setError(`There was a problem updating the person. ${error}`);
       })
+    
+    setEditing(false);
   }
 
   const deletePerson = (email) => {
@@ -88,6 +93,10 @@ export function PersonPage() {
       });
   };
 
+  const handleEditing = () => {
+    setEditing(!editing);
+  }
+
   useEffect(() => {
     fetchPerson();
   }, [initialEmail]);
@@ -99,62 +108,74 @@ export function PersonPage() {
   }
 
   return (
-    <div>
+    <div className={'wrapper'}>
       <h1>Person Information</h1>
       {/* Handling error */}
       {error ? <p>{error}</p> : null}
       {/* Display person information if no error */}
 
-      {person && (
-        <div className={'person-container'}>
-          <p>Name: {person.name}</p>
-          <p>Email: {person.email}</p>
-          {/* Roles aren't getting the list */}
-          <p>Roles: {person.role}</p>
-          <p>Affiliation: {person.affiliation}</p>
 
-          <form>
-            <label htmlFor="name">
-              Name
-            </label>
-            <input required type="text" id="name" value={name} onChange={changeName}/>
+      <div className={'person-container'}>
 
-            <label htmlFor="email">
-              Email
-            </label>
-            <input required disabled={true} type="text" id="email" value={email} onChange={changeEmail}/>
-
-            <label htmlFor="affiliation">
-              Affiliation
-            </label>
-            <input type="text" id="affiliation" value={affiliation} onChange={changeAffiliation}/>
-
-            <label htmlFor="role">
-              Role
-            </label>
-            <select
-              required
-              name="role"
-              value={role}
-              onChange={changeRole}
-              style={{padding: '8px', borderRadius: '4px', border: '1px solid #ccc'}}
-            >
-              <option value="" disabled>Select a role</option>
-              {/* Default option */}
-              {Object.keys(roleOptions).map((code) => (
-                <option key={code}>
-                  {roleOptions[code]}
-                </option>
-              ))}
-            </select>
-          </form>
-
+        {!editing && (
           <div>
-            <button onClick={() => updatePerson()}>Update</button>
-            <button onClick={() => deletePerson(email)}>X</button>
+            <p>Name: {person.name}</p>
+            <p>Email: {person.email}</p>
+            {/* Roles aren't getting the list */}
+            <p>Roles: {person.role}</p>
+            <p>Affiliation: {person.affiliation}</p>
           </div>
-        </div>
-      )}
+        )}
+
+        {editing && (
+          <div>
+            <form>
+              <label htmlFor="name">
+                Name
+              </label>
+              <input required type="text" id="name" value={name} onChange={changeName}/>
+
+              <label htmlFor="email">
+                Email
+              </label>
+              <input required disabled={true} type="text" id="email" value={email} onChange={changeEmail}/>
+
+              <label htmlFor="affiliation">
+                Affiliation
+              </label>
+              <input type="text" id="affiliation" value={affiliation} onChange={changeAffiliation}/>
+
+              <label htmlFor="role">
+                Role
+              </label>
+              <select
+                required
+                name="role"
+                value={role}
+                onChange={changeRole}
+                style={{padding: '8px', borderRadius: '4px', border: '1px solid #ccc'}}
+              >
+                <option value="" disabled>Select a role</option>
+                {/* Default option */}
+                {Object.keys(roleOptions).map((code) => (
+                  <option key={code}>
+                    {roleOptions[code]}
+                  </option>
+                ))}
+              </select>
+            </form>
+
+            <div>
+              <button onClick={() => updatePerson()}>Update</button>
+              <button onClick={() => deletePerson(email)}>X</button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <button onClick={handleEditing}>{editing ? 'Cancel' : 'Edit'}</button>
+      </div>
     </div>
   );
 }
