@@ -149,7 +149,6 @@ function peopleObjectToArray(Data) {
   return keys.map((key) => Data[key]);
 }
 
-
 function PersonRow({person, deletePerson}) {
   const {name, email, roles, affiliation} = person;
 

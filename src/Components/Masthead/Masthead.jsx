@@ -3,14 +3,15 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
 import './Masthead.css';
 
-
+const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
 const MASTHEAD_ENDPOINT = `${BACKEND_URL}/users/masthead`;
 
 function Masthead() {
   const [masthead, setMasthead] = useState(null);
   const [error, setError] = useState('');
-
-
+  
+  const [people, setPeople] = useState([]);
+  
   useEffect(() => {
     const fetchMasthead = async () => {
       try {
@@ -28,6 +29,27 @@ function Masthead() {
     fetchMasthead();
   }, []);
 
+  function peopleObjectToArray(Data) {
+    const keys = Object.keys(Data);
+    return keys.map((key) => Data[key]);
+  }
+
+  const fetchPeople = () => {
+    axios.get(PEOPLE_READ_ENDPOINT)
+      .then(
+        ({data}) => {
+          setPeople(peopleObjectToArray(data));
+        }
+      )
+      .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
+  };
+
+  useEffect(fetchPeople, []);
+  
+  const editors = people.filter(person => person.roles.includes('editor'));
+  const managingEditors= people.filter(person => person.roles.includes('managing editor'));
+  const consultingEditors = people.filter(person => person.roles.includes('consulting editor'));
+
   return (
     <div className="masthead-wrapper">
       <h1>Journal Masthead</h1>
@@ -38,42 +60,39 @@ function Masthead() {
         <p>Loading...</p>
       ) : (
         <div>
-          {/* Render Editors */}
           <h2>Editors</h2>
-          {Array.isArray(masthead.Editor) && masthead.Editor.length > 0 ? (
+          {editors.length > 0 ? (
             <ul>
-              {masthead.Editor.map((editor, index) => (
-                <li key={index}>
-                  <strong>{editor.name}</strong> {/* Render editor names */}
-                </li>
+              {editors.map((person, index) => (
+                <li key={index}>{person.name}</li>
               ))}
             </ul>
+            
           ) : (
             <p>No editors available.</p>
           )}
 
-          {/* Render Managing Editors */}
           <h2>Managing Editors</h2>
-          {Array.isArray(masthead["Managing Editor"]) && masthead["Managing Editor"].length > 0 ? (
+          {managingEditors.length > 0 ? (
             <ul>
-              {masthead["Managing Editor"].map((editor, index) => (
-                <li key={index}>{editor}</li>
+              {managingEditors.map((person, index) => (
+                <li key={index}>{person.name}</li>
               ))}
             </ul>
+
           ) : (
-            <p>No managing editors.</p>
+            <p>No managing editors available.</p>
           )}
 
-          {/* Render Consulting Editors */}
           <h2>Consulting Editors</h2>
-          {Array.isArray(masthead["Consulting Editor"]) && masthead["Consulting Editor"].length > 0 ? (
+          {consultingEditors.length > 0 ? (
             <ul>
-              {masthead["Consulting Editor"].map((editor, index) => (
-                <li key={index}>{editor}</li>
+              {consultingEditors.map((person, index) => (
+                <li key={index}>{person.name}</li>
               ))}
             </ul>
           ) : (
-            <p>No consulting editors.</p>
+            <p>No consulting editors available.</p>
           )}
         </div>
       )}
