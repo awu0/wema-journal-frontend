@@ -45,7 +45,9 @@ function Masthead() {
   };
 
   useEffect(fetchPeople, []);
-  
+
+  const authors = people.filter(person => person.roles.includes('author'));
+  const referees = people.filter(person => person.roles.includes('referee'));
   const editors = people.filter(person => person.roles.includes('editor'));
   const managingEditors= people.filter(person => person.roles.includes('managing editor'));
   const consultingEditors = people.filter(person => person.roles.includes('consulting editor'));
@@ -60,6 +62,30 @@ function Masthead() {
         <p>Loading...</p>
       ) : (
         <div>
+          <h2>Authors</h2>
+          {authors.length > 0 ? (
+            <ul>
+              {authors.map((person, index) => (
+                <li key={index}>{person.name}</li>
+              ))}
+            </ul>
+
+          ) : (
+            <p>No authors available.</p>
+          )}
+
+          <h2>Referee</h2>
+          {referees.length > 0 ? (
+            <ul>
+              {referees.map((person, index) => (
+                <li key={index}>{person.name}</li>
+              ))}
+            </ul>
+
+          ) : (
+            <p>No referees available.</p>
+          )}
+          
           <h2>Editors</h2>
           {editors.length > 0 ? (
             <ul>
