@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
-import Submissions from './Submissions';
+import Submissions from '../Components/Submissions/Submissions.jsx';
 
 jest.mock('axios');
 
