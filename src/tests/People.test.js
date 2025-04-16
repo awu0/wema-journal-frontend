@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
-import People from '../Components/People.jsx';
+import People from '../Components/People';
 
 jest.mock('axios');
 

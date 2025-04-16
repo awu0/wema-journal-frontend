@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
 import App from './App';
-import { homeHeader } from './App'; // assumes homeHeader is something like "Welcome to WEMA"
+import { homeHeader } from './App'; 
 
 describe('App', () => {
   it('renders nav and home', async () => {
@@ -14,12 +14,11 @@ describe('App', () => {
       </MemoryRouter>
     );
 
-    // match a heading case-insensitively
     const heading = await screen.findByRole('heading');
     expect(heading).toHaveTextContent(homeHeader);
 
     const items = await screen.findAllByRole('listitem');
-    expect(items.length).toBeGreaterThan(0); // since nav has more than 3
+    expect(items.length).toBeGreaterThan(0);
   });
 
   it('switches to People view', async () => {
@@ -29,7 +28,7 @@ describe('App', () => {
       </MemoryRouter>
     );
 
-    userEvent.click(screen.getByText(/view people/i)); // matches "View People"
+    userEvent.click(screen.getByText(/view people/i));
 
     const heading = await screen.findByRole('heading');
     expect(heading).toHaveTextContent(/people/i);

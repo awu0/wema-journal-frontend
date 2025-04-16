@@ -19,7 +19,7 @@ describe("PersonPage", () => {
   });
 
   const personData = {
-    name: "John Doe",
+    name: "Jiahao Lin",
     email: "test@example.com",
     affiliation: "NYU",
     role: "admin",
@@ -43,12 +43,12 @@ describe("PersonPage", () => {
     render(<PersonPage />, { wrapper: BrowserRouter });
 
     await waitFor(() => {
-      expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
+      expect(screen.getByText(/Jiahao Lin/i)).toBeInTheDocument();
       expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
       expect(screen.getByText(/NYU/i)).toBeInTheDocument();
     });
 
-    expect(screen.getByDisplayValue("John Doe")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("Jiahao Lin")).toBeInTheDocument();
     expect(screen.getByDisplayValue("test@example.com")).toBeInTheDocument();
     expect(screen.getByDisplayValue("NYU")).toBeInTheDocument();
   });
@@ -73,7 +73,7 @@ describe("PersonPage", () => {
     render(<PersonPage />, { wrapper: BrowserRouter });
 
     await waitFor(() => {
-      expect(screen.getByDisplayValue("John Doe")).toBeInTheDocument();
+      expect(screen.getByDisplayValue("Jiahao Lin")).toBeInTheDocument();
     });
 
     fireEvent.change(screen.getByLabelText(/Name/i), {
@@ -105,7 +105,7 @@ describe("PersonPage", () => {
     render(<PersonPage />, { wrapper: BrowserRouter });
 
     await waitFor(() => {
-      expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
+      expect(screen.getByText(/Jiahao Lin/i)).toBeInTheDocument();
     });
 
     fireEvent.click(screen.getByText("X"));
