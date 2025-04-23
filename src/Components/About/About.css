@@ -1,6 +1,55 @@
 .about-container {
-    padding: 20px;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+}
+
+.edit-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-controls button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.full-edit-textarea {
+  width: 100%;
+  min-height: 400px;
+  padding: 1rem;
+  font-family: monospace;
+  white-space: pre;
+  line-height: 1.5;
+}
+
+.about-container h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.about-container p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
