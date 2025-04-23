@@ -15,6 +15,7 @@ describe("PersonPage", () => {
   const mockNavigate = jest.fn();
 
   beforeEach(() => {
+    jest.clearAllMocks();
     require("react-router-dom").useNavigate.mockReturnValue(mockNavigate);
   });
 
@@ -33,31 +34,29 @@ describe("PersonPage", () => {
   it("renders loading state initially", () => {
     axios.get.mockResolvedValueOnce({ data: {} });
     axios.get.mockResolvedValueOnce({ data: {} });
-  
+
     render(<PersonPage />, { wrapper: BrowserRouter });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("renders person data after fetch", async () => {
     axios.get
-      .mockResolvedValueOnce({ data: personData }) 
-      .mockResolvedValueOnce({ data: rolesData }); 
+      .mockResolvedValueOnce({ data: personData }) // person
+      .mockResolvedValueOnce({ data: rolesData }); // roles
 
     render(<PersonPage />, { wrapper: BrowserRouter });
 
     await waitFor(() => {
-      expect(screen.getByText(/Jiahao Lin/i)).toBeInTheDocument();
+      expect(screen.getByText("Jiahao Lin")).toBeInTheDocument();
       expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
       expect(screen.getByText(/NYU/i)).toBeInTheDocument();
     });
-
-    expect(screen.getByDisplayValue("Jiahao Lin")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("test@example.com")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("NYU")).toBeInTheDocument();
   });
 
   it("handles error if person fetch fails", async () => {
-    axios.get.mockRejectedValueOnce(new Error("Not found"));
+    axios.get
+      .mockRejectedValueOnce(new Error("Not found")) // person
+      .mockResolvedValueOnce({ data: rolesData });   // roles
 
     render(<PersonPage />, { wrapper: BrowserRouter });
 
@@ -68,16 +67,18 @@ describe("PersonPage", () => {
 
   it("updates the person", async () => {
     axios.get
-      .mockResolvedValueOnce({ data: personData }) 
-      .mockResolvedValueOnce({ data: rolesData }); 
+      .mockResolvedValueOnce({ data: personData })  // person
+      .mockResolvedValueOnce({ data: rolesData });  // roles
 
     axios.patch.mockResolvedValueOnce({});
 
     render(<PersonPage />, { wrapper: BrowserRouter });
 
     await waitFor(() => {
-      expect(screen.getByDisplayValue("Jiahao Lin")).toBeInTheDocument();
+      expect(screen.getByText("Jiahao Lin")).toBeInTheDocument();
     });
+
+    fireEvent.click(screen.getByText(/Edit/i));
 
     fireEvent.change(screen.getByLabelText(/Name/i), {
       target: { value: "Jane Doe" },
@@ -100,17 +101,18 @@ describe("PersonPage", () => {
 
   it("deletes the person and navigates away", async () => {
     axios.get
-      .mockResolvedValueOnce({ data: personData })
-      .mockResolvedValueOnce({ data: rolesData });
+      .mockResolvedValueOnce({ data: personData })  // person
+      .mockResolvedValueOnce({ data: rolesData });  // roles
 
     axios.delete.mockResolvedValueOnce({});
 
     render(<PersonPage />, { wrapper: BrowserRouter });
 
     await waitFor(() => {
-      expect(screen.getByText(/Jiahao Lin/i)).toBeInTheDocument();
+      expect(screen.getByText("Jiahao Lin")).toBeInTheDocument();
     });
 
+    fireEvent.click(screen.getByText(/Edit/i));
     fireEvent.click(screen.getByText("X"));
 
     await waitFor(() => {

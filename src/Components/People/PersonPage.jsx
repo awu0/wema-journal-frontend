@@ -107,6 +107,14 @@ export function PersonPage() {
     return <p>Loading...</p>;
   }
 
+  if (error) {
+    return <p>{error}</p>;
+  }
+  
+  if (!person) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className={'wrapper'}>
       <h1>{person.name}</h1>
