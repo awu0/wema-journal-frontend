@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import People from '../Components/People';
 
@@ -12,11 +13,16 @@ describe('People', () => {
 
   beforeEach(() => {
     axios.get.mockImplementation((url) => {
-      if (url === '/api/people') {
-        return Promise.resolve({ data: mockPeople });
+      if (url.includes('/users')) {
+        return Promise.resolve({
+          data: {
+            'pablo@nyu.edu': mockPeople[0],
+            'jason@gmail.com': mockPeople[1]
+          }
+        });
       }
-      if (url === '/api/roles') {
-        return Promise.resolve({ data: { Editor: 1, Referee: 2 } });
+      if (url.includes('/roles')) {
+        return Promise.resolve({ data: { Editor: 'Editor', Referee: 'Referee' } });
       }
       return Promise.reject(new Error('Unknown endpoint'));
     });
@@ -27,15 +33,34 @@ describe('People', () => {
   });
 
   it('fetches and displays people data', async () => {
-    render(<People />);
-    await waitFor(() => expect(screen.getByText('Pablo')).toBeInTheDocument());
-    expect(screen.getByText('Jason')).toBeInTheDocument();
+    render(
+      <BrowserRouter>
+        <People />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Pablo')).toBeInTheDocument();
+      expect(screen.getByText('Jason')).toBeInTheDocument();
+    });
   });
 
   it('shows an error message if fetching people fails', async () => {
-    axios.get.mockRejectedValueOnce(new Error('Failed to fetch')); // override people fetch just for this test
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/users')) {
+        return Promise.reject(new Error('Failed to fetch'));
+      }
+      if (url.includes('/roles')) {
+        return Promise.resolve({ data: { Editor: 'Editor', Referee: 'Referee' } });
+      }
+    });
 
-    render(<People />);
+    render(
+      <BrowserRouter>
+        <People />
+      </BrowserRouter>
+    );
+
     await waitFor(() =>
       expect(
         screen.getByText(/There was a problem retrieving the list of people/i)
