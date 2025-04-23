@@ -1,5 +1,5 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import { PersonPage } from "./People/PersonPage";
+import { PersonPage } from "../Components/People/PersonPage.jsx";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 
@@ -31,6 +31,9 @@ describe("PersonPage", () => {
   };
 
   it("renders loading state initially", () => {
+    axios.get.mockResolvedValueOnce({ data: {} });
+    axios.get.mockResolvedValueOnce({ data: {} });
+  
     render(<PersonPage />, { wrapper: BrowserRouter });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
