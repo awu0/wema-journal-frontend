@@ -1,12 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {BACKEND_URL} from "../../constants";
 
-const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
-const PEOPLE_UPDATE_ENDPOINT = `${BACKEND_URL}/users`;
-const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users`;
-const ROLES_ENDPOINT = `${BACKEND_URL}/roles`
+import * as api from "../../api"
 
 export function PersonPage() {
   const navigate = useNavigate();
@@ -43,8 +38,7 @@ export function PersonPage() {
   };
 
   const fetchPerson = () => {
-    axios
-      .get(`${PEOPLE_READ_ENDPOINT}/${initialEmail}`)
+    api.getUserByEmail(initialEmail)
       .then(({data}) => {
         setPerson(data);
         setName(data.name);
@@ -58,7 +52,7 @@ export function PersonPage() {
   };
 
   const getRoles = () => {
-    axios.get(ROLES_ENDPOINT)
+    api.getRoles()
       .then(({data}) => setRoleOptions(data))
       .catch((error) => {
         setError(`There was a problem getting roles. ${error}`);
@@ -72,7 +66,7 @@ export function PersonPage() {
       affiliation: affiliation,
       role: role,
     }
-    axios.patch(`${PEOPLE_UPDATE_ENDPOINT}/${email}`, updatedPerson)
+    api.updateUser(email, updatedPerson)
       .then(() => {
         setPerson(updatedPerson);
         setEditing(false);
@@ -84,7 +78,7 @@ export function PersonPage() {
   }
 
   const deletePerson = (email) => {
-    axios.delete(`${PEOPLE_DELETE_ENDPOINT}/${email}`)
+    api.deleteUser(email)
       .then(() => {
         navigate("/people"); // redirect to people homepage
       })

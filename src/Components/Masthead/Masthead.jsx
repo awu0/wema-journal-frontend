@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { BACKEND_URL } from '../../constants';
 import './Masthead.css';
 
-const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
-const MASTHEAD_ENDPOINT = `${BACKEND_URL}/users/masthead`;
+import * as api from "../../api";
 
 function Masthead() {
   const [masthead, setMasthead] = useState(null);
@@ -15,7 +12,7 @@ function Masthead() {
   useEffect(() => {
     const fetchMasthead = async () => {
       try {
-        const response = await axios.get(MASTHEAD_ENDPOINT);
+        const response = await api.getMasthead();
         if (response.data && response.data.Masthead) {
           setMasthead(response.data.Masthead);
         } else {
@@ -35,7 +32,7 @@ function Masthead() {
   }
 
   const fetchPeople = () => {
-    axios.get(PEOPLE_READ_ENDPOINT)
+    api.getUsers()
       .then(
         ({data}) => {
           setPeople(peopleObjectToArray(data));

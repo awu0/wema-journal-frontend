@@ -13,15 +13,15 @@ export const createUser = async (newUser) => {
 }
 
 export const getUserByEmail = async (email) => {
-  return axios.get(`${BACKEND_URL}/users/${email}`);
+  return axios.get(`${USER_ENDPOINT}/${email}`);
 };
 
 export const updateUser = async (email, userData) => {
-  return axios.patch(`${BACKEND_URL}/users/${email}`, userData);
+  return axios.patch(`${USER_ENDPOINT}/${email}`, userData);
 };
 
 export const deleteUser = async (email) => {
-  return axios.delete(`${BACKEND_URL}/users/${email}`);
+  return axios.delete(`${USER_ENDPOINT}/${email}`);
 };
 
 export const getRoles = async () => {
