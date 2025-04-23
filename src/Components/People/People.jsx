@@ -1,24 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import propTypes from 'prop-types';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
 
-import {BACKEND_URL} from '../../constants';
-
-const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/users`;
-const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/users`;
-const PEOPLE_DELETE_ENDPOINT = `${BACKEND_URL}/users`;
-const ROLES_ENDPOINT = `${BACKEND_URL}/roles`
-
+import * as api from "../../api";
 
 // Add Person Form
 function AddPersonForm({
-                         visible,
-                         cancel,
-                         fetchPeople,
-                         setSuccess,
-                         setError,
-                         roleOptions,
+                         visible, cancel, fetchPeople, setSuccess, setError, roleOptions,
                        }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,12 +29,9 @@ function AddPersonForm({
   const addPerson = (event) => {
     event.preventDefault();
     const newPerson = {
-      name: name,
-      email: email,
-      affiliation: affiliation,
-      role: role
+      name: name, email: email, affiliation: affiliation, role: role
     }
-    axios.post(PEOPLE_CREATE_ENDPOINT, newPerson)
+    api.createUser(newPerson)
       .then(fetchPeople)
       .then(() => {
         // clear the form
@@ -65,8 +50,7 @@ function AddPersonForm({
   };
 
   if (!visible) return null;
-  return (
-    <form>
+  return (<form>
       <label htmlFor="name">
         Name
       </label>
@@ -94,17 +78,14 @@ function AddPersonForm({
       >
         <option value="" disabled>Select a role</option>
         {/* Default option */}
-        {Object.keys(roleOptions).map((code) => (
-          <option key={code}>
+        {Object.keys(roleOptions).map((code) => (<option key={code}>
             {roleOptions[code]}
-          </option>
-        ))}
+          </option>))}
       </select>
 
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>
-    </form>
-  );
+    </form>);
 }
 
 AddPersonForm.propTypes = {
@@ -131,11 +112,9 @@ SuccessMessage.propTypes = {
 
 // Error Message
 function ErrorMessage({message}) {
-  return (
-    <div className="error-message">
+  return (<div className="error-message">
       {message}
-    </div>
-  );
+    </div>);
 }
 
 ErrorMessage.propTypes = {
@@ -152,8 +131,7 @@ function peopleObjectToArray(Data) {
 function PersonRow({person, deletePerson}) {
   const {name, email, roles, affiliation} = person;
 
-  return (
-    <tr>
+  return (<tr>
       <td>
         <Link to={`/people/${email}`}>
           {name}
@@ -162,9 +140,10 @@ function PersonRow({person, deletePerson}) {
       <td>{email}</td>
       <td>{roles && roles.length > 0 ? roles.join(', ') : 'N/A'}</td>
       <td>{affiliation || 'N/A'}</td>
-      <td><button onClick={() => deletePerson(email)}>X</button></td>
-    </tr>
-  );
+      <td>
+        <button onClick={() => deletePerson(email)}>X</button>
+      </td>
+    </tr>);
 }
 
 PersonRow.propTypes = {
@@ -173,8 +152,7 @@ PersonRow.propTypes = {
     email: propTypes.string.isRequired,
     roles: propTypes.arrayOf(propTypes.string).isRequired,
     affiliation: propTypes.string
-  }).isRequired,
-  deletePerson: propTypes.func.isRequired,
+  }).isRequired, deletePerson: propTypes.func.isRequired,
 };
 
 // Main People Component
@@ -186,8 +164,8 @@ function People() {
   const [addingPerson, setAddingPerson] = useState(false);
 
   const [roleMap, setRoleMap] = useState({});
-  
-  const [sortConfig, setSortConfig] = useState({key: "name",  direction: "asc"});
+
+  const [sortConfig, setSortConfig] = useState({key: "name", direction: "asc"});
 
   const handleSort = (key) => {
     let direction = "asc";
@@ -197,9 +175,9 @@ function People() {
       direction = "desc";
     }
 
-    setSortConfig({ key, direction });
+    setSortConfig({key, direction});
   };
-  
+
   const sortedPeople = [...people].sort((a, b) => {
     let personA = a[sortConfig.key] ?? "";
     let personB = b[sortConfig.key] ?? "";
@@ -211,23 +189,21 @@ function People() {
 
     if (personA < personB) return sortConfig.direction === "asc" ? -1 : 1;
     if (personA > personB) return sortConfig.direction === "asc" ? 1 : -1;
-    
+
     return 0;
-  }) 
-  
+  })
+
   // Fetch People Data
   const fetchPeople = () => {
-    axios.get(PEOPLE_READ_ENDPOINT)
-      .then(
-        ({data}) => {
-          setPeople(peopleObjectToArray(data));
-        }
-      )
+    api.getUsers()
+      .then(({data}) => {
+        setPeople(peopleObjectToArray(data));
+      })
       .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
   };
 
   const getRoles = () => {
-    axios.get(ROLES_ENDPOINT)
+    api.getRoles()
       .then(({data}) => setRoleMap(data))
       .catch((error) => {
         setError(`There was a problem getting roles. ${error}`);
@@ -246,7 +222,7 @@ function People() {
 
   // Delete Person Function
   const deletePerson = (email) => {
-    axios.delete(`${PEOPLE_DELETE_ENDPOINT}/${email}`)
+    api.deleteUser(email)
       .then(() => {
         fetchPeople(); // Re-fetch people after deletion
       })
@@ -258,8 +234,7 @@ function People() {
   useEffect(fetchPeople, []);
   useEffect(getRoles, []);
 
-  return (
-    <div className="wrapper">
+  return (<div className="wrapper">
       <header>
         <h1>View People</h1>
         <button type="button" onClick={showAddPersonForm}>
@@ -292,22 +267,17 @@ function People() {
         </tr>
         </thead>
         <tbody>
-        {
-          sortedPeople.map((person) =>
-            <PersonRow
-              key={person.email}
-              person={person}
-              fetchPeople={fetchPeople}
-              roleMap={roleMap}
-              deletePerson={deletePerson}
-            />
-          )
-        }
+        {sortedPeople.map((person) => <PersonRow
+          key={person.email}
+          person={person}
+          fetchPeople={fetchPeople}
+          roleMap={roleMap}
+          deletePerson={deletePerson}
+        />)}
         </tbody>
       </table>
 
-    </div>
-  );
+    </div>);
 }
 
 export default People;
