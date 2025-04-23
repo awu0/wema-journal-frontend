@@ -1,11 +1,16 @@
 // src/api.js
 import axios from 'axios';
+import {BACKEND_URL} from './constants';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://0.0.0.0:8000';
+const USER_ENDPOINT = `${BACKEND_URL}/users`
 
 export const getUsers = async () => {
-  return axios.get(`${BACKEND_URL}/users`);
+  return axios.get(USER_ENDPOINT);
 };
+
+export const createUser = async (newUser) => {
+  return axios.post(USER_ENDPOINT, newUser)
+}
 
 export const getUserByEmail = async (email) => {
   return axios.get(`${BACKEND_URL}/users/${email}`);
