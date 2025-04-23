@@ -56,7 +56,6 @@ function Submissions() {
             <li>Title should be concise and descriptive</li>
             <li>Content must be properly formatted</li>
             <li>Include all author names</li>
-            <li>Select the publication date</li>
           </ul>
         </div>
       </div>
@@ -95,17 +94,6 @@ function Submissions() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Enter manuscript content"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="publicationDate">Publication Date</label>
-          <input
-            type="date"
-            id="publicationDate"
-            value={publicationDate}
-            onChange={(e) => setPublicationDate(e.target.value)}
             required
           />
         </div>
