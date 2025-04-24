@@ -1,33 +1,47 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import Submissions from '../Components/Submissions/Submissions.jsx';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('axios');
 
 describe('Submissions Component', () => {
-    it('renders list of manuscripts from the backend', async () => {
-        const mockManuscripts = [
-            { title: 'Title 1', author: 'Author 1', content: 'Content 1', publication_date: '01/01/2025', state: 'Published' },
-            { title: 'Title 2', author: 'Author 2', content: 'Content 2', publication_date: '01/02/2025', state: 'Pending' }
-        ];
-        axios.get.mockResolvedValueOnce({ data: mockManuscripts });
-
+    it('submits a manuscript successfully', async () => {
+        axios.post.mockResolvedValueOnce({});
+      
         render(<Submissions />);
-
-        await waitFor(() => {
-            expect(screen.getByText('Title: Title 1')).toBeInTheDocument();
-            expect(screen.getByText('Title: Title 2')).toBeInTheDocument();
-        });
+        const titleInput = screen.getByLabelText(/Manuscript Title/i);
+        const authorInput = screen.getByLabelText(/Author Name/i);
+        const contentInput = screen.getByLabelText(/Manuscript Content/i);
+        const dateInput = screen.getByLabelText(/Publication Date/i);
+        const submitButton = screen.getByRole('button', { name: /submit/i });
+      
+        await userEvent.type(titleInput, 'Test Title');
+        await userEvent.type(authorInput, 'Test Author');
+        await userEvent.type(contentInput, 'Test Content');
+        await userEvent.type(dateInput, '2025-04-23');
+      
+        await userEvent.click(submitButton);
+      
+        await waitFor(() =>
+          expect(screen.getByText(/Submission successful!/i)).toBeInTheDocument()
+        );
     });
+      
 
-    it('shows error message when API call fails', async () => {
-        const mockError = 'Network Error';
-        axios.get.mockRejectedValueOnce(new Error(mockError));
-
+    it('shows error message when submission fails', async () => {
+        axios.post.mockRejectedValueOnce(new Error('Network Error'));
+      
         render(<Submissions />);
-
-        await waitFor(() => {
-            expect(screen.getByText(/There was a problem retrieving the list of people/)).toBeInTheDocument();
-        });
+        await userEvent.type(screen.getByLabelText(/Manuscript Title/i), 'Test Title');
+        await userEvent.type(screen.getByLabelText(/Author Name/i), 'Test Author');
+        await userEvent.type(screen.getByLabelText(/Manuscript Content/i), 'Test Content');
+        await userEvent.type(screen.getByLabelText(/Publication Date/i), '2025-04-23');
+      
+        await userEvent.click(screen.getByRole('button', { name: /submit/i }));
+      
+        await waitFor(() =>
+          expect(screen.getByText(/Submission failed. Please try again./i)).toBeInTheDocument()
+        );
     });
 });

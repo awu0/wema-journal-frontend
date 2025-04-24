@@ -41,8 +41,8 @@ describe("PersonPage", () => {
 
   it("renders person data after fetch", async () => {
     axios.get
-      .mockResolvedValueOnce({ data: personData }) // person
-      .mockResolvedValueOnce({ data: rolesData }); // roles
+      .mockResolvedValueOnce({ data: personData })
+      .mockResolvedValueOnce({ data: rolesData });
 
     render(<PersonPage />, { wrapper: BrowserRouter });
 
@@ -55,8 +55,8 @@ describe("PersonPage", () => {
 
   it("handles error if person fetch fails", async () => {
     axios.get
-      .mockRejectedValueOnce(new Error("Not found")) // person
-      .mockResolvedValueOnce({ data: rolesData });   // roles
+      .mockRejectedValueOnce(new Error("Not found"))
+      .mockResolvedValueOnce({ data: rolesData });
 
     render(<PersonPage />, { wrapper: BrowserRouter });
 
@@ -67,8 +67,8 @@ describe("PersonPage", () => {
 
   it("updates the person", async () => {
     axios.get
-      .mockResolvedValueOnce({ data: personData })  // person
-      .mockResolvedValueOnce({ data: rolesData });  // roles
+      .mockResolvedValueOnce({ data: personData }) 
+      .mockResolvedValueOnce({ data: rolesData });
 
     axios.patch.mockResolvedValueOnce({});
 
@@ -101,8 +101,8 @@ describe("PersonPage", () => {
 
   it("deletes the person and navigates away", async () => {
     axios.get
-      .mockResolvedValueOnce({ data: personData })  // person
-      .mockResolvedValueOnce({ data: rolesData });  // roles
+      .mockResolvedValueOnce({ data: personData }) 
+      .mockResolvedValueOnce({ data: rolesData }); 
 
     axios.delete.mockResolvedValueOnce({});
 
