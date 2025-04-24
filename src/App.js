@@ -17,9 +17,11 @@ import Submissions from './Components/Submissions';
 import Masthead from './Components/Masthead';
 import Login from './Login/Login';
 
+export const homeHeader = "WEMA Journal";
+
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
         {/* Home page setup */}
@@ -48,7 +50,7 @@ function App() {
         {/* About login route */}
         <Route path="login" element={<Login />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
