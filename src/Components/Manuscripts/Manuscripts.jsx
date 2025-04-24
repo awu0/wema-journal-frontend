@@ -7,7 +7,7 @@ import './Manuscripts.css';
 const MANUSCRIPTS_READ_ENDPOINT = `${BACKEND_URL}/manuscripts`;
 
 const ManuscriptRow = (manuscript) => {
-  const {title, author, content, publication_date, state} = manuscript
+  const {title, author, content, submission_date, state} = manuscript
 
   return (
     <tr>
@@ -18,7 +18,7 @@ const ManuscriptRow = (manuscript) => {
       </td>
       <td>{author}</td>
       <td>{content}</td>
-      <td>{publication_date}</td>
+      <td>{submission_date}</td>
       <td>{state}</td>
     </tr>
   )
@@ -81,7 +81,7 @@ function ViewManuscripts() {
           <td
             onClick={() => handleSort("content")}>Content {sortConfig.key === "content" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
-            onClick={() => handleSort("datePublished")}>Date published {sortConfig.key === "datePublished" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+            onClick={() => handleSort("dateSubmitted")}>Date published {sortConfig.key === "dateSubmitted" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
             onClick={() => handleSort("state")}>State{sortConfig.key === "state" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
         </tr>

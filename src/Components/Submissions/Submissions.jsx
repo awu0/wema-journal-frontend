@@ -7,13 +7,12 @@ function Submissions() {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
-  const [publicationDate, setPublicationDate] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !author || !content || !publicationDate) {
+    if (!title || !author || !content) {
       setSubmissionStatus('Please fill out all fields.');
       return;
     }
@@ -22,7 +21,6 @@ function Submissions() {
       title,
       author,
       content,
-      "publication_date": publicationDate,
     };
 
     try {
@@ -36,7 +34,6 @@ function Submissions() {
       setTitle('');
       setAuthor('');
       setContent('');
-      setPublicationDate('');
     } catch (error) {
       console.error('Error submitting manuscript:', error);
       setSubmissionStatus('Submission failed. Please try again.');
