@@ -1,45 +1,77 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BACKEND_URL } from '../../constants';
 import './Home.css';
 
 function Home() {
-    const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [homeContent, setHomeContent] = useState({
+    fullText: `# Welcome to the WEMA Journal
 
-    const handleViewPeople = () => {
-        navigate('/people');
+The WEMA Journal is a student created project where individuals can submit manuscripts for review and publication. 
+Explore our mission, meet the team, and make a submission by using the navigation bar above.`
+  });
+
+  useEffect(() => {
+    const fetchHomeContent = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/home`);
+        if (response.data) {
+          setHomeContent(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching home content:", error);
+      }
     };
+    fetchHomeContent();
+  }, []);
 
-    const handleViewSubmissions = () => {
-        navigate('/manuscripts');
-    };
+  const handleSave = async () => {
+    try {
+      await axios.post(`${BACKEND_URL}/home`, homeContent);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving home content:", error);
+    }
+  };
 
-    const handleViewMission = () => {
-        navigate('/about');
-    };
+  const renderFormattedText = (text) => {
+    const lines = text.split('\n');
+    return lines.map((line, index) => {
+      if (line.startsWith('# ')) {
+        return <h1 key={index}>{line.substring(2)}</h1>;
+      }
+      if (line.startsWith('## ')) {
+        return <h2 key={index}>{line.substring(3)}</h2>;
+      }
+      return <p key={index}>{line || <br />}</p>;
+    });
+  };
 
-    const handleViewSubmit = () => {
-        navigate('/submissions');
-    };
-
-    return (
-        <div className="home-container">
-            <h1>WEMA Journal</h1>
-            <p>Read about our mission statement</p>
-            <button className="view-mission-btn" onClick={handleViewMission}>View Our Mission</button>
-
-            <h2>Meet Our Team</h2>
-            <p>Get to know the people who make this platform possible.</p>
-            <button className="view-people-btn" onClick={handleViewPeople}>View People</button>
-            
-            <h2>Submit Manuscript</h2>
-            <p>Submit a manuscript and have it reviewed and published</p>
-            <button className="view-people-btn" onClick={handleViewSubmit}>Go Submit a Manuscript</button>
-
-            <h2>View Submissions</h2>
-            <p>Check the list of submitted manuscripts.</p>
-            <button className="view-submissions-btn" onClick={handleViewSubmissions}>View Submitted Manuscripts</button>
+  return (
+    <div className="home-container">
+      {!isEditing ? (
+        <button className="edit-home-button" onClick={() => setIsEditing(true)}>
+          Edit Home Page
+        </button>
+      ) : (
+        <div className="edit-controls">
+          <button onClick={handleSave}>Save</button>
+          <button onClick={() => setIsEditing(false)}>Cancel</button>
         </div>
-    );
+      )}
+
+      {isEditing ? (
+        <textarea
+          value={homeContent.fullText}
+          onChange={(e) => setHomeContent({ fullText: e.target.value })}
+          className="full-edit-textarea"
+        />
+      ) : (
+        renderFormattedText(homeContent.fullText)
+      )}
+    </div>
+  );
 }
 
 export default Home;

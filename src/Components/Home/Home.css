@@ -1,67 +1,60 @@
 .home-container {
-  max-width: 800px;
-  margin: 0 auto;
   padding: 2rem;
-  font-family: 'Arial', sans-serif;
-  color: #333;
+  max-width: 900px;
+  margin: auto;
+  font-family: 'Georgia', serif;
   line-height: 1.6;
-  text-align: center;
+  color: #333;
+  position: relative;
 }
 
-.home-container h1 {
-  font-size: 2.2rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 0.5rem;
-  display: inline-block;
-}
-
-.home-container h2 {
-  font-size: 1.5rem;
-  color: #2c3e50;
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.home-container p {
-  color: #555;
-  margin-bottom: 1.5rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto; 
-}
-
-button {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 1rem;
-}
-
-.view-mission-btn,
-.view-people-btn,
-.view-submissions-btn {
-  background-color: #28a745;
+.edit-home-button {
+  background-color: #888;
   color: white;
+  font-size: 0.85rem;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 1rem;
+  float: right;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .home-container {
-      padding: 1rem;
-  }
-  
-  .home-container h1 {
-      font-size: 1.8rem;
-  }
-  
-  .home-container h2 {
-      font-size: 1.3rem;
-  }
+.edit-home-button:hover {
+  background-color: #666;
+}
+
+.edit-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.edit-controls button {
+  background-color: #888;
+  color: white;
+  font-size: 0.85rem;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-controls button:hover {
+  background-color: #666;
+}
+
+.full-edit-textarea {
+  width: 100%;
+  height: 400px;
+  font-size: 1rem;
+  font-family: monospace;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f9f9f9;
+  resize: vertical;
 }
