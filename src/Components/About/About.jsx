@@ -47,7 +47,7 @@ function About() {
       {/* Edit button - would be conditional on admin status in production */}
       {!isEditing ? (
         <button className="edit-button" onClick={() => setIsEditing(true)}>
-          Edit Content
+          Edit About Page
         </button>
       ) : (
         <div className="edit-controls">

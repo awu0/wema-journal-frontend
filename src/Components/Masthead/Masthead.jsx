@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Masthead.css';
-
+import { Link } from 'react-router-dom';
 import * as api from "../../api";
 
 function Masthead() {
@@ -75,7 +75,9 @@ function Masthead() {
           {referees.length > 0 ? (
             <ul>
               {referees.map((person, index) => (
-                <li key={index}>{person.name}</li>
+                <li key={index}>
+                <Link to={`/people/${person.email}`}>{person.name}</Link> {/* Link to PersonPage */}
+              </li>
               ))}
             </ul>
 
@@ -87,7 +89,9 @@ function Masthead() {
           {editors.length > 0 ? (
             <ul>
               {editors.map((person, index) => (
-                <li key={index}>{person.name}</li>
+                <li key={index}>
+                <Link to={`/people/${person.email}`}>{person.name}</Link> {/* Link to PersonPage */}
+              </li>
               ))}
             </ul>
             
@@ -99,7 +103,9 @@ function Masthead() {
           {managingEditors.length > 0 ? (
             <ul>
               {managingEditors.map((person, index) => (
-                <li key={index}>{person.name}</li>
+                <li key={index}>
+                <Link to={`/people/${person.email}`}>{person.name}</Link> {/* Link to PersonPage */}
+              </li>
               ))}
             </ul>
 
@@ -111,7 +117,9 @@ function Masthead() {
           {consultingEditors.length > 0 ? (
             <ul>
               {consultingEditors.map((person, index) => (
-                <li key={index}>{person.name}</li>
+                <li key={index}>
+                <Link to={`/people/${person.email}`}>{person.name}</Link> {/* Link to PersonPage */}
+              </li>
               ))}
             </ul>
           ) : (
