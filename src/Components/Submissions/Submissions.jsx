@@ -6,13 +6,14 @@ import './Submissions.css';
 function Submissions() {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+  const [abstract, setAbstract] = useState('');
   const [content, setContent] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !author || !content) {
+    if (!title || !author || !abstract || !content) {
       setSubmissionStatus('Please fill out all fields.');
       return;
     }
@@ -20,6 +21,7 @@ function Submissions() {
     const submissionData = {
       title,
       author,
+      abstract,
       content,
     };
 
@@ -33,7 +35,8 @@ function Submissions() {
       setSubmissionStatus('Submission successful!');
       setTitle('');
       setAuthor('');
-      setContent('');
+      setAbstract('');
+      setContent(''); 
     } catch (error) {
       console.error('Error submitting manuscript:', error);
       setSubmissionStatus('Submission failed. Please try again.');
@@ -80,6 +83,17 @@ function Submissions() {
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             placeholder="Enter author name"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="content">Manuscript Abstract</label>
+          <textarea
+            id="abstract"
+            value={abstract}
+            onChange={(e) => setAbstract(e.target.value)}
+            placeholder="Enter manuscript abstract"
             required
           />
         </div>

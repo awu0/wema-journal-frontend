@@ -3,6 +3,7 @@ import axios from 'axios';
 import {BACKEND_URL} from './constants';
 
 const USER_ENDPOINT = `${BACKEND_URL}/users`
+const MANUSCRIPT_ENDPOINT = `${BACKEND_URL}/manuscripts`
 
 export const getUsers = async () => {
   return axios.get(USER_ENDPOINT);
@@ -33,8 +34,12 @@ export const login = async (email, password) => {
 };
 
 export const getManuscripts = async () => {
-  return axios.get(`${BACKEND_URL}/manuscripts`);
+  return axios.get(MANUSCRIPT_ENDPOINT);
 };
+
+export const getManuscriptsById = async (id) => {
+  return axios.get(`${MANUSCRIPT_ENDPOINT}/${id}`);
+}
 
 // Extracted from Masthead component
 export const getMasthead = async () => {

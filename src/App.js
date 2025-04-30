@@ -15,6 +15,7 @@ import Manuscripts from './Components/Manuscripts';
 import Submissions from './Components/Submissions';
 import Masthead from './Components/Masthead';
 import Login from './Login/Login';
+import {ManuscriptPage} from "./Components/Manuscripts/ManuscriptPage";
 
 export const homeHeader = "WEMA Journal";
 
@@ -36,6 +37,7 @@ function App() {
 
         {/* Manuscripts route */}
         <Route path="Manuscripts" element={<Manuscripts />} />
+        <Route path="manuscripts/:_id" element={<ManuscriptPage />} />
 
         {/* Submissions route */}
         <Route path="Submissions" element={<Submissions />} />

@@ -1,22 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {BACKEND_URL} from "../../constants";
-import axios from "axios";
 import {Link} from "react-router-dom";
+import * as api from "../../api";
 import './Manuscripts.css';
 
-const MANUSCRIPTS_READ_ENDPOINT = `${BACKEND_URL}/manuscripts`;
-
-const ManuscriptRow = (manuscript) => {
-  const {title, author, content, submission_date, state} = manuscript
+const ManuscriptRow = (params) => {
+  const {_id, title, author, abstract, content, submission_date, state} = params.manuscript
 
   return (
     <tr>
       <td>
-        <Link to={`manuscripts/${title}`}>
+        <Link to={_id}>
           {title}
         </Link>
       </td>
       <td>{author}</td>
+      <td>{abstract}</td>
       <td>{content}</td>
       <td>{submission_date}</td>
       <td>{state}</td>
@@ -58,13 +56,13 @@ function ViewManuscripts() {
 
   // fetch manuscript Data
   const fetchManuscripts = () => {
-    axios.get(MANUSCRIPTS_READ_ENDPOINT)
+    api.getManuscripts()
       .then(
         ({data}) => {
           setManuscripts(data);
         }
       )
-      .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
+      .catch((error) => setError(`There was a problem retrieving the list of manuscripts. ${error}`));
   };
 
   useEffect(fetchManuscripts, []);
@@ -78,6 +76,7 @@ function ViewManuscripts() {
             onClick={() => handleSort("title")}>Title {sortConfig.key === "title" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
             onClick={() => handleSort("author")}>Author {sortConfig.key === "author" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+          <td>Abstract</td>
           <td
             onClick={() => handleSort("content")}>Content {sortConfig.key === "content" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
@@ -87,7 +86,7 @@ function ViewManuscripts() {
         </tr>
         </thead>
         <tbody>
-        {sortedManuscripts.map((manuscript) => ManuscriptRow(manuscript))}
+        {sortedManuscripts.map((manuscript) => <ManuscriptRow key={manuscript._id} manuscript={manuscript} />)}
         </tbody>
       </table>
       {error}
