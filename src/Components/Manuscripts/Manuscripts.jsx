@@ -94,8 +94,8 @@ function ViewManuscripts() {
           <td
             onClick={() => handleSort("content")}>Content {sortConfig.key === "content" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
-            onClick={() => handleSort("dateSubmitted")}>Date
-            published {sortConfig.key === "dateSubmitted" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+            onClick={() => handleSort("submission_date")}>Date
+            published {sortConfig.key === "submission_date" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
             onClick={() => handleSort("state")}>State{sortConfig.key === "state" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td>Delete</td>
