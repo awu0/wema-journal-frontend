@@ -41,6 +41,10 @@ export const getManuscriptsById = async (id) => {
   return axios.get(`${MANUSCRIPT_ENDPOINT}/${id}`);
 }
 
+export const deleteManuscript = async (id) => {
+  return axios.delete(`${MANUSCRIPT_ENDPOINT}/${id}`);
+}
+
 // Extracted from Masthead component
 export const getMasthead = async () => {
   return axios.get(`${BACKEND_URL}/users/masthead`);

@@ -5,6 +5,7 @@ import './Manuscripts.css';
 
 const ManuscriptRow = (params) => {
   const {_id, title, author, abstract, content, submission_date, state} = params.manuscript
+  const deleteManuscript = params.deleteManuscript
 
   return (
     <tr>
@@ -18,6 +19,9 @@ const ManuscriptRow = (params) => {
       <td>{content}</td>
       <td>{submission_date}</td>
       <td>{state}</td>
+      <td>
+        <button onClick={() => deleteManuscript(_id)}>X</button>
+      </td>
     </tr>
   )
 }
@@ -65,6 +69,16 @@ function ViewManuscripts() {
       .catch((error) => setError(`There was a problem retrieving the list of manuscripts. ${error}`));
   };
 
+  const deleteManuscript = (_id) => {
+    api.deleteManuscript(_id)
+      .then(() => {
+        fetchManuscripts(); // Re-fetch manuscrript after deletion
+      })
+      .catch((error) => {
+        setError(`There was a problem deleting the manuscript. ${error}`);
+      });
+  };
+
   useEffect(fetchManuscripts, []);
 
   return (
@@ -80,13 +94,15 @@ function ViewManuscripts() {
           <td
             onClick={() => handleSort("content")}>Content {sortConfig.key === "content" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
-            onClick={() => handleSort("dateSubmitted")}>Date published {sortConfig.key === "dateSubmitted" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+            onClick={() => handleSort("dateSubmitted")}>Date
+            published {sortConfig.key === "dateSubmitted" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
             onClick={() => handleSort("state")}>State{sortConfig.key === "state" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
+          <td>Delete</td>
         </tr>
         </thead>
         <tbody>
-        {sortedManuscripts.map((manuscript) => <ManuscriptRow key={manuscript._id} manuscript={manuscript} />)}
+        {sortedManuscripts.map((manuscript) => <ManuscriptRow key={manuscript._id} manuscript={manuscript} deleteManuscript={deleteManuscript} />)}
         </tbody>
       </table>
       {error}
