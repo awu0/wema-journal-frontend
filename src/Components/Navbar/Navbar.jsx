@@ -15,9 +15,13 @@ const PAGES = [
 
 function NavLink({ page }) {
   const { label, destination } = page;
+  const isLogin = label === 'Login';
   return (
-    <li className="nav-item">
-      <Link to={destination} className="nav-link">
+    <li className={`nav-item ${isLogin ? 'login-item' : ''}`}>
+      <Link 
+        to={destination} 
+        className={`nav-link ${isLogin ? 'login-link' : ''}`}
+      >
         {label}
       </Link>
     </li>
@@ -30,6 +34,7 @@ NavLink.propTypes = {
     destination: propTypes.string.isRequired,
   }).isRequired,
 };
+
 
 function Navbar() {
   return (

@@ -88,3 +88,36 @@
     background-color: #dc3545;
     color: white;
   }
+
+.guidelines-textarea {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  min-height: 200px;
+  line-height: 1.6;
+}
+
+.displayed-guidelines {
+  white-space: pre-line;
+  line-height: 1.8;
+}
+
+.guidelines-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.edit-guidelines-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
