@@ -9,7 +9,15 @@ function Submissions() {
   const [abstract, setAbstract] = useState('');
   const [content, setContent] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState('');
-
+  const [isEditingGuidelines, setIsEditingGuidelines] = useState(false);
+  const [guidelinesText, setGuidelinesText] = useState(
+    `Please review the following requirements before submitting to WEMA Journal:
+    
+    • Manuscripts must be original, unpublished work
+    • Title should be concise and descriptive
+    • Content must be properly formatted
+    • Include all author names`
+  );
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -45,18 +53,33 @@ function Submissions() {
 
   return (
     <div className="submissions-page">
-
-      {/* New Guidelines Section */}
+      {/* NEW EDITABLE GUIDELINES SECTION */}
       <div className="submission-guidelines">
-        <h1>WEMA Submission Guidelines</h1>
+        <div className="guidelines-header">
+          <h1>WEMA Submission Guidelines</h1>
+          <button 
+            onClick={() => setIsEditingGuidelines(!isEditingGuidelines)}
+            className="edit-guidelines-btn"
+          >
+            {isEditingGuidelines ? 'Save' : 'Edit'}
+          </button>
+        </div>
+        
         <div className="guidelines-content">
-          <p>Please review the following requirements before submitting to WEMA Journal:</p>
-          <ul>
-            <li>Manuscripts must be original, unpublished work</li>
-            <li>Title should be concise and descriptive</li>
-            <li>Content must be properly formatted</li>
-            <li>Include all author names</li>
-          </ul>
+          {isEditingGuidelines ? (
+            <textarea
+              className="guidelines-textarea"
+              value={guidelinesText}
+              onChange={(e) => setGuidelinesText(e.target.value)}
+              rows="8"
+            />
+          ) : (
+            <div className="displayed-guidelines">
+              {guidelinesText.split('\n').map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
