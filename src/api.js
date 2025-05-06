@@ -33,6 +33,10 @@ export const login = async (email, password) => {
   return axios.post(`${BACKEND_URL}/login`, { email, password });
 };
 
+export const register = async (email, password) => {
+  return axios.post(`${BACKEND_URL}/register`, { email, password });
+};
+
 export const getManuscripts = async () => {
   return axios.get(MANUSCRIPT_ENDPOINT);
 };

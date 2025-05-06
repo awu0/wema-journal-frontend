@@ -2,6 +2,7 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import authService from "../../auth";
 
 const PAGES = [
   { label: 'Home', destination: '/home' },
@@ -15,7 +16,22 @@ const PAGES = [
 
 function NavLink({ page }) {
   const { label, destination } = page;
+  
   const isLogin = label === 'Login';
+
+  const authToken= !!localStorage.getItem('authToken');
+
+  if (isLogin && authToken) {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    
+    return (
+      <li className={`login-item`}>
+        Hello {userData.name}, <a onClick={authService.logout}>Logout</a>
+      </li>
+    )
+  }
+  
+  // return login page
   return (
     <li className={`nav-item ${isLogin ? 'login-item' : ''}`}>
       <Link 

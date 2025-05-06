@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import authService from "../auth";
 import './Login.css';
 
 function Login() {
+  const navigate = useNavigate();
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,10 +14,18 @@ function Login() {
     event.preventDefault();
     if (username === '' || password === '') {
       setError('Both fields are required.');
-    } else {
-      setError('');
-      console.log('Login Attempt:', { username, password });
+      return
     }
+    
+    setError('');
+    
+    authService.login(username, password).then(() => {
+      // redirect to page
+      navigate('/home');
+      window.location.reload();
+    }).catch((error) => {
+      setError(error.response.data.message);
+    })
   };
 
   return (
