@@ -6,20 +6,20 @@ import './Login.css';
 function Login() {
   const navigate = useNavigate();
   
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = (event) => {
     event.preventDefault();
-    if (username === '' || password === '') {
+    if (email === '' || password === '') {
       setError('Both fields are required.');
       return
     }
     
     setError('');
     
-    authService.login(username, password).then(() => {
+    authService.login(email, password).then(() => {
       // redirect to page
       navigate('/home');
       window.location.reload();
@@ -37,13 +37,13 @@ function Login() {
           {error && <p className="error-message">{error}</p>}
 
           <div className="input-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
               type="text"
-              id="username"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>

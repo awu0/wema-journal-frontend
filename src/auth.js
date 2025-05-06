@@ -44,8 +44,8 @@ const login = async (email, password) => {
 /**
  * Register user
  */
-const register = async (userData) => {
-  const response = await axios.post(`${BACKEND_URL}/signup`, userData);
+const register = async (name, email, password, affiliation) => {
+  const response = await api.register(name, email, password, affiliation);
 
   if (response.data.token) {
     localStorage.setItem('authToken', response.data.token);

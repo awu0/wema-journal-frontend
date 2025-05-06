@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import './Register.css';
+import authService from "../auth";
 
 function Register() {
   const [name, setName] = useState('');
@@ -9,59 +10,33 @@ function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    
+
     // Validate form
     if (!name || !email || !affiliation || !password || !confirmPassword) {
       setError('All fields are required.');
       return;
-    } 
-    
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
-    
-    setLoading(true);
+
     setError('');
-    
-    try {
-      // Make API call to registration endpoint
-      const response = await fetch('/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          affiliation: affiliation,
-          password: password
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
-      
-      // Save token to localStorage for auth
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // Redirect to dashboard or home page
+
+    authService.register(name, email, password, affiliation).then(() => {
+      // redirect to page
       navigate('/home');
-      
-    } catch (err) {
-      setError(err.message || 'An error occurred during registration');
-    } finally {
-      setLoading(false);
-    }
+      window.location.reload();
+    }).catch((error) => {
+      console.log(error.response);
+      setError(error.response.data.message);
+    });
   };
 
   return (
@@ -133,12 +108,11 @@ function Register() {
             />
           </div>
 
-          <button 
-            type="submit" 
-            className="login-button" 
-            disabled={loading}
+          <button
+            type="submit"
+            className="login-button"
           >
-            {loading ? 'Registering...' : 'Register'}
+            Register
           </button>
         </form>
 
