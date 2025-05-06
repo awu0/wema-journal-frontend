@@ -30,7 +30,7 @@ export const getRoles = async () => {
 };
 
 export const login = async (email, password) => {
-  return axios.post(`${BACKEND_URL}/auth/login`, { email, password });
+  return axios.post(`${BACKEND_URL}/login`, { email, password });
 };
 
 export const getManuscripts = async () => {

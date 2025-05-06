@@ -15,6 +15,7 @@ import Manuscripts from './Components/Manuscripts';
 import Submissions from './Components/Submissions';
 import Masthead from './Components/Masthead';
 import Login from './Login/Login';
+import Register from './Register/Register';
 import {ManuscriptPage} from "./Components/Manuscripts/ManuscriptPage";
 
 export const homeHeader = "WEMA Journal";
@@ -50,6 +51,9 @@ function App() {
 
         {/* About login route */}
         <Route path="login" element={<Login />} />
+
+        {/* About register route */}
+        <Route path="register" element={<Register />} />
       </Routes>
     </>
   );
