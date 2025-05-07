@@ -17,12 +17,13 @@ import Masthead from './Components/Masthead';
 import Login from './Login/Login';
 import Register from './Register/Register';
 import {ManuscriptPage} from "./Components/Manuscripts/ManuscriptPage";
+import { UserProvider } from './userContext';
 
 export const homeHeader = "WEMA Journal";
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <Navbar />
       <Routes>
         {/* Home page setup */}
@@ -55,7 +56,7 @@ function App() {
         {/* About register route */}
         <Route path="register" element={<Register />} />
       </Routes>
-    </>
+    </UserProvider>
   );
 }
 

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
+import { useUser } from '../../userContext';
 import './About.css';
 
 function About() {
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
   const [isEditing, setIsEditing] = useState(false);
   const [aboutContent, setAboutContent] = useState({
     fullText: `# About Us\n\nWelcome to the WEMA Journal. Here you will find information about our project and team.\n\nOur team consists of William Lin, Eric Dong, Matthew Ma, and Aaron Wu.\n\nWe are currently working on connecting to frontend.`
@@ -45,15 +48,17 @@ function About() {
   return (
     <div className="about-container">
       {/* Edit button - would be conditional on admin status in production */}
-      {!isEditing ? (
-        <button className="edit-button" onClick={() => setIsEditing(true)}>
-          Edit About Page
-        </button>
-      ) : (
-        <div className="edit-controls">
-          <button onClick={handleSave}>Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
-        </div>
+      {isEditor && (
+        !isEditing ? (
+          <button className="edit-button" onClick={() => setIsEditing(true)}>
+            Edit About Page
+          </button>
+        ) : (
+          <div className="edit-controls">
+            <button onClick={handleSave}>Save</button>
+            <button onClick={() => setIsEditing(false)}>Cancel</button>
+          </div>
+        )
       )}
 
       {isEditing ? (
