@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
+import { useUser } from '../../userContext';
 import './Home.css';
 
 function Home() {
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
   const [isEditing, setIsEditing] = useState(false);
   const [homeContent, setHomeContent] = useState({
     fullText: `# Welcome to the WEMA Journal
@@ -50,15 +53,17 @@ Explore our mission, meet the team, and make a submission by using the navigatio
 
   return (
     <div className="home-container">
-      {!isEditing ? (
-        <button className="edit-home-button" onClick={() => setIsEditing(true)}>
-          Edit Home Page
-        </button>
-      ) : (
-        <div className="edit-controls">
-          <button onClick={handleSave}>Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
-        </div>
+      {isEditor && (
+        !isEditing ? (
+          <button className="edit-home-button" onClick={() => setIsEditing(true)}>
+            Edit Home Page
+          </button>
+        ) : (
+          <div className="edit-controls">
+            <button onClick={handleSave}>Save</button>
+            <button onClick={() => setIsEditing(false)}>Cancel</button>
+          </div>
+        )
       )}
 
       {isEditing ? (

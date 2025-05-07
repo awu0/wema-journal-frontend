@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../../constants';
+import { useUser } from '../../userContext';
 import axios from 'axios';
 import './Submissions.css';
 
 function Submissions() {
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [abstract, setAbstract] = useState('');
@@ -57,12 +60,14 @@ function Submissions() {
       <div className="submission-guidelines">
         <div className="guidelines-header">
           <h1>WEMA Submission Guidelines</h1>
-          <button 
-            onClick={() => setIsEditingGuidelines(!isEditingGuidelines)}
-            className="edit-guidelines-btn"
-          >
-            {isEditingGuidelines ? 'Save' : 'Edit'}
-          </button>
+          {isEditor && (
+            <button 
+              onClick={() => setIsEditingGuidelines(!isEditingGuidelines)}
+              className="edit-guidelines-btn"
+            >
+              {isEditingGuidelines ? 'Save' : 'Edit'}
+            </button>
+          )}
         </div>
         
         <div className="guidelines-content">
