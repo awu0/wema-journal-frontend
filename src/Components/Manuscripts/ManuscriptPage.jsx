@@ -95,7 +95,7 @@ export function ManuscriptPage() {
                 onChange={(e) => setRefereeForm(e.target.value)}
               >
                 <option value="">-- Select a referee --</option>
-                {referees.map((ref, index) => (
+                {referees?.map((ref, index) => (
                   <option key={index} value={ref}>
                     {ref}
                   </option>
