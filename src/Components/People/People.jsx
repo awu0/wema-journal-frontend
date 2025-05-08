@@ -136,9 +136,13 @@ function PersonRow({person, deletePerson}) {
 
   return (<tr>
       <td>
-        <Link to={`/people/${email}`}>
-          {name}
-        </Link>
+        {isEditor ? (
+          <Link to={`/people/${email}`}>
+            {name}
+          </Link>
+        ) : (
+          name
+        )}
       </td>
       <td>{email}</td>
       <td>{roles && roles.length > 0 ? roles.join(', ') : 'N/A'}</td>
