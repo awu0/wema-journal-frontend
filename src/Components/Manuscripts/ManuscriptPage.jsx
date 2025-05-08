@@ -17,7 +17,7 @@ export function ManuscriptPage() {
 
   const [originalState, setOriginalState] = useState("");
   const [state, setState] = useState('');
-  const validStates = Object.entries(MANUSCRIPT_ACTIONS);
+  const [validStates, setValidStates] = useState([])
   const {user} = useUser();
   const isEditor = user?.roles?.includes('editor');
 
@@ -29,18 +29,24 @@ export function ManuscriptPage() {
       .catch((err) => console.error("Failed to update state:", err));
   };
 
-  const fetchManuscript = () => {
-    api.getManuscriptsById(_id)
-      .then(({data}) => {
-        setTitle(data.title);
-        setAuthor(data.author);
-        setAbstract(data.abstract);
-        setContent(data.content);
-        setSubmission_date(data.submission_date);
-        setState(data.state);
-        setReferees(data.ref)
-        setOriginalState(data.state);
-      })
+  const fetchManuscript = async () => {
+    try {
+      // First, fetch the manuscript and update state
+      const {data} = await api.getManuscriptsById(_id);
+      setTitle(data.title);
+      setAuthor(data.author);
+      setAbstract(data.abstract);
+      setContent(data.content);
+      setSubmission_date(data.submission_date);
+      setState(data.state);
+      setReferees(data.ref);
+      setOriginalState(data.state);
+
+      const validActionsRes = await api.getManuscriptValidActions(data.state);
+      setValidStates(validActionsRes.data.valid_actions);
+    } catch (err) {
+      console.error("Failed to fetch manuscript or valid states:", err);
+    }
   }
 
   useEffect(() => {
@@ -56,16 +62,16 @@ export function ManuscriptPage() {
       <p>Content: {content}</p>
       <p>Date submitted: {submission_date}</p>
       <p>State: {originalState}</p>
-      <p>Referees: {Array.isArray(referees) && referees.length > 0 ? (
-          <ul>
-            {referees.map((ref, index) => (
-              <li key={index}>{ref}</li>
-            ))}
-          </ul>
-        ) : (
+      <div>Referees: {Array.isArray(referees) && referees.length > 0 ? (
+        <ul>
+          {referees.map((ref, index) => (
+            <li key={index}>{ref}</li>
+          ))}
+        </ul>
+      ) : (
         <span>No referees available.</span>
-        )}
-      </p>
+      )}
+      </div>
 
       {isEditor && (
         <div>
@@ -75,8 +81,11 @@ export function ManuscriptPage() {
             value={state}
             onChange={(e) => setState(e.target.value)}
           >
-            {validStates.map(([label, code]) => (
-              <option key={code} value={code}>{label}</option>
+            <option value="">-- Select Action --</option>
+            {validStates.map(state => (
+              <option key={state} value={state}>
+                {state}
+              </option>
             ))}
           </select>
 

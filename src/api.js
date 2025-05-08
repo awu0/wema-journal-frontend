@@ -68,6 +68,10 @@ export const manuscriptReceiveAction = async (_id, state, action, ref=undefined)
   return axios.put(`${MANUSCRIPT_ENDPOINT}/receive_action`, data);
 };
 
+export const getManuscriptValidActions = async (state) => {
+  return axios.post(`${MANUSCRIPT_ENDPOINT}/valid_actions`, { state });
+}
+
 // Extracted from Masthead component
 export const getMasthead = async () => {
   return axios.get(`${BACKEND_URL}/users/masthead`);
