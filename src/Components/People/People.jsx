@@ -246,16 +246,17 @@ function People() {
   };
 
   // Delete Person Function
-  const deletePerson = (email) => {
-    api.deleteUser(email)
-      .then(() => {
-        fetchPeople(); // Re-fetch people after deletion
-      })
-      .catch((error) => {
-        setError(`There was a problem deleting the person. ${error}`);
-      });
-  };
-
+const deletePerson = (email) => {
+  api.deleteUser(email)
+    .then(() => {
+      const personToDelete = people.find(person => person.email === email);
+      fetchPeople(); 
+      setSuccess(`Successfully deleted ${personToDelete?.name || email}`);
+    })
+    .catch((error) => {
+      setError(`There was a problem deleting the person. ${error}`);
+    });
+};
   useEffect(fetchPeople, []);
   useEffect(getRoles, []);
 
