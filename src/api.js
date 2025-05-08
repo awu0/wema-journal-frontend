@@ -62,6 +62,10 @@ export const updateManuscript = async (id, updatedFields) => {
   return axios.patch(`${MANUSCRIPT_ENDPOINT}/${id}`, updatedFields);
 };
 
+export const manuscriptReceiveAction = async (_id, state, action) => {
+  return axios.put(`${MANUSCRIPT_ENDPOINT}/receive_action`, { _id, state, action });
+};
+
 // Extracted from Masthead component
 export const getMasthead = async () => {
   return axios.get(`${BACKEND_URL}/users/masthead`);

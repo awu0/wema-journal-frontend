@@ -13,6 +13,7 @@ export function ManuscriptPage() {
   const [abstract, setAbstract] = useState("");
   const [content, setContent] = useState("");
   const [submission_date, setSubmission_date] = useState("");
+  const [originalState, setOriginalState] = useState("");
   const [state, setState] = useState('');
   const validStates = Object.entries(MANUSCRIPT_STATES);
   const { user } = useUser();
@@ -20,7 +21,7 @@ export function ManuscriptPage() {
 
 
   const handleUpdateState = () => {
-    api.updateManuscript(_id, { state })
+    api.manuscriptReceiveAction(_id, originalState,  state)
       .then(() => fetchManuscript())
       .catch((err) => console.error("Failed to update state:", err));
   };
@@ -34,6 +35,7 @@ export function ManuscriptPage() {
         setContent(data.content);
         setSubmission_date(data.submission_date);
         setState(data.state);
+        setOriginalState(data.state);
       })
   }
 
