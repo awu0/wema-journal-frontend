@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import * as api from "../../api";
 import {useUser} from '../../userContext';
-import {MANUSCRIPT_STATES} from '../../constants';
+import {MANUSCRIPT_ACTIONS} from '../../constants';
 
 
 export function ManuscriptPage() {
@@ -17,7 +17,7 @@ export function ManuscriptPage() {
 
   const [originalState, setOriginalState] = useState("");
   const [state, setState] = useState('');
-  const validStates = Object.entries(MANUSCRIPT_STATES);
+  const validStates = Object.entries(MANUSCRIPT_ACTIONS);
   const {user} = useUser();
   const isEditor = user?.roles?.includes('editor');
 
@@ -80,14 +80,14 @@ export function ManuscriptPage() {
             ))}
           </select>
 
-          {state === MANUSCRIPT_STATES.ASSIGN_REF && (
+          {state === MANUSCRIPT_ACTIONS.ASSIGN_REF && (
             <>
               <label htmlFor="referee">Referee:</label>
               <input value={refereeForm} onChange={(e) => setRefereeForm(e.target.value.trim())}/>
             </>
           )}
 
-          {state === MANUSCRIPT_STATES.DELETE_REF && (
+          {state === MANUSCRIPT_ACTIONS.DELETE_REF && (
             <>
               <label htmlFor="referee">Referee:</label>
               <select
