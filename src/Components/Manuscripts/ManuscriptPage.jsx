@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import * as api from "../../api";
 import {useUser} from '../../userContext';
-import {MANUSCRIPT_ACTIONS} from '../../constants';
+import {MANUSCRIPT_ACTION_TO_NAME, MANUSCRIPT_ACTIONS} from '../../constants';
 
 
 export function ManuscriptPage() {
@@ -84,7 +84,7 @@ export function ManuscriptPage() {
             <option value="">-- Select Action --</option>
             {validStates.map(state => (
               <option key={state} value={state}>
-                {state}
+                {MANUSCRIPT_ACTION_TO_NAME[state]} ({state})
               </option>
             ))}
           </select>
