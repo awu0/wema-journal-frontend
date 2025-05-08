@@ -56,10 +56,16 @@ export function ManuscriptPage() {
       <p>Content: {content}</p>
       <p>Date submitted: {submission_date}</p>
       <p>State: {originalState}</p>
-      <p>Referees:
-        {referees.map((ref, index) => (
-          <li key={index}>{ref}</li>
-        ))}</p>
+      <p>Referees: {Array.isArray(referees) && referees.length > 0 ? (
+          <ul>
+            {referees.map((ref, index) => (
+              <li key={index}>{ref}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No referees available.</p>
+        )}
+      </p>
 
       {isEditor ? (
         <div>
