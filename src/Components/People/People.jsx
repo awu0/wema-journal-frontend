@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import propTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import { useUser } from '../../userContext';
 
 import * as api from "../../api";
 
@@ -130,6 +131,8 @@ function peopleObjectToArray(Data) {
 
 function PersonRow({person, deletePerson}) {
   const {name, email, roles, affiliation} = person;
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
 
   return (<tr>
       <td>
@@ -140,9 +143,11 @@ function PersonRow({person, deletePerson}) {
       <td>{email}</td>
       <td>{roles && roles.length > 0 ? roles.join(', ') : 'N/A'}</td>
       <td>{affiliation || 'N/A'}</td>
-      <td>
-        <button onClick={() => deletePerson(email)}>X</button>
-      </td>
+      {isEditor && (
+        <td>
+          <button onClick={() => deletePerson(email)}>X</button>
+        </td>
+      )}
     </tr>);
 }
 
@@ -159,6 +164,8 @@ PersonRow.propTypes = {
 function People() {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
 
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
@@ -237,9 +244,11 @@ function People() {
   return (<div className="wrapper">
       <header>
         <h1>View People</h1>
-        <button type="button" onClick={showAddPersonForm}>
-          Add a Person
-        </button>
+        {isEditor && (
+          <button type="button" onClick={showAddPersonForm}>
+            Add a Person
+          </button>
+        )}
       </header>
       <AddPersonForm
         visible={addingPerson}
@@ -263,7 +272,7 @@ function People() {
             onClick={() => handleSort("roles")}>Roles {sortConfig.key === "roles" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
             onClick={() => handleSort("affiliation")}>Affiliation {sortConfig.key === "affiliation" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
-          <td>Delete</td>
+          {isEditor && <td>Delete</td>}
         </tr>
         </thead>
         <tbody>

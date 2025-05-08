@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
+import { useUser } from '../../userContext';
 import * as api from "../../api";
 import './Manuscripts.css';
 
 const ManuscriptRow = (params) => {
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
   const {_id, title, author, abstract, content, submission_date, state} = params.manuscript
   const deleteManuscript = params.deleteManuscript
 
@@ -19,14 +22,18 @@ const ManuscriptRow = (params) => {
       <td>{content}</td>
       <td>{submission_date}</td>
       <td>{state}</td>
-      <td>
-        <button onClick={() => deleteManuscript(_id)}>X</button>
-      </td>
+      {isEditor && (
+        <td>
+          <button onClick={() => deleteManuscript(_id)}>X</button>
+        </td>
+      )}
     </tr>
   )
 }
 
 function ViewManuscripts() {
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
   const [manuscripts, setManuscripts] = useState([]);
   const [error, setError] = useState('');
 
@@ -98,11 +105,11 @@ function ViewManuscripts() {
             published {sortConfig.key === "submission_date" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
           <td
             onClick={() => handleSort("state")}>State{sortConfig.key === "state" ? (sortConfig.direction === "asc" ? "▲" : "▼") : ""}</td>
-          <td>Delete</td>
+          {isEditor && <td>Delete</td>}
         </tr>
         </thead>
         <tbody>
-        {sortedManuscripts.map((manuscript) => <ManuscriptRow key={manuscript._id} manuscript={manuscript} deleteManuscript={deleteManuscript} />)}
+        {sortedManuscripts.map((manuscript) => <ManuscriptRow key={manuscript._id} manuscript={manuscript} deleteManuscript={deleteManuscript} isEditor={isEditor} />)}
         </tbody>
       </table>
       {error}
