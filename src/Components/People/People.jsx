@@ -13,6 +13,7 @@ function AddPersonForm({
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
   const [role, setRole] = useState('');
+  const [password, setPassword] = useState('');
 
   const changeName = (event) => {
     setName(event.target.value);
@@ -26,11 +27,14 @@ function AddPersonForm({
   const changeRole = (event) => {
     setRole(event.target.value);
   };
+  const changePassword = (event) => {
+    setPassword(event.target.value);
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
     const newPerson = {
-      name: name, email: email, affiliation: affiliation, role: role
+      name: name, email: email, affiliation: affiliation, role: role, password: password,
     }
     api.createUser(newPerson)
       .then(fetchPeople)
@@ -83,6 +87,16 @@ function AddPersonForm({
             {roleOptions[code]}
           </option>))}
       </select>
+      <label htmlFor="password">
+        Password
+      </label>
+      <input
+        type="password"
+        id="password"
+        value={password}
+        onChange={changePassword}
+        required
+      />
 
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>

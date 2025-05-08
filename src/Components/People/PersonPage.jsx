@@ -14,6 +14,7 @@ export function PersonPage() {
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
   const [role, setRole] = useState('');
+  const [password, setPassword] = useState('');
 
   const [roleOptions, setRoleOptions] = useState({});
 
@@ -36,6 +37,9 @@ export function PersonPage() {
   const changeRole = (event) => {
     setRole(event.target.value);
   };
+  const changePassword = (event) => {
+    setPassword(event.target.value);
+  };
 
   const fetchPerson = () => {
     api.getUserByEmail(initialEmail)
@@ -45,6 +49,7 @@ export function PersonPage() {
         setEmail(data.email);
         setAffiliation(data.affiliation);
         setRole(data.role);
+        setPassword(data.password)
       })
       .catch(() => {
         setError(`There was a problem getting ${email}. They might not exist.`);
@@ -65,6 +70,7 @@ export function PersonPage() {
       email: email,
       affiliation: affiliation,
       role: role,
+      password: password,
     }
     api.updateUser(email, updatedPerson)
       .then(() => {
@@ -164,6 +170,16 @@ export function PersonPage() {
                   </option>
                 ))}
               </select>
+              <label htmlFor="password">
+                New Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Leave blank to keep current password"
+                value={password}
+                onChange={changePassword}
+              />
             </form>
 
             <div>
