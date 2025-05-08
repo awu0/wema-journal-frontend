@@ -13,15 +13,18 @@ export function ManuscriptPage() {
   const [abstract, setAbstract] = useState("");
   const [content, setContent] = useState("");
   const [submission_date, setSubmission_date] = useState("");
+  const [referees, setReferees] = useState([])
+  
   const [originalState, setOriginalState] = useState("");
   const [state, setState] = useState('');
   const validStates = Object.entries(MANUSCRIPT_STATES);
   const { user } = useUser();
   const isEditor = user?.roles?.includes('editor');
 
+  const [refereeForm, setRefereeForm] = useState('');
 
   const handleUpdateState = () => {
-    api.manuscriptReceiveAction(_id, originalState,  state)
+    api.manuscriptReceiveAction(_id, originalState,  state, refereeForm)
       .then(() => fetchManuscript())
       .catch((err) => console.error("Failed to update state:", err));
   };
@@ -35,6 +38,7 @@ export function ManuscriptPage() {
         setContent(data.content);
         setSubmission_date(data.submission_date);
         setState(data.state);
+        setReferees(data.ref)
         setOriginalState(data.state);
       })
   }
@@ -42,6 +46,7 @@ export function ManuscriptPage() {
   useEffect(() => {
     fetchManuscript()
   }, [_id]);
+  console.log(referees)
 
   return (
     <div>
@@ -51,9 +56,15 @@ export function ManuscriptPage() {
       <p>Abstract: {abstract}</p>
       <p>Content: {content}</p>
       <p>Date submitted: {submission_date}</p>
+      <p>State: {originalState}</p>
+      <p>Referees:
+        {referees.map((ref, index) => (
+          <li key={index}>{ref}</li>
+        ))}</p>
+      
       {isEditor ? (
         <div>
-          <label htmlFor="state">State:</label>
+          <label htmlFor="state">Update State:</label>
           <select
             id="state"
             value={state}
@@ -63,6 +74,31 @@ export function ManuscriptPage() {
               <option key={code} value={code}>{label}</option>
             ))}
           </select>
+
+          {state === MANUSCRIPT_STATES.ASSIGN_REF && (
+           <>
+             <label htmlFor="referee">Referee:</label>
+             <input value={refereeForm} onChange={(e) => setRefereeForm(e.target.value.trim())}/>
+           </>  
+          )}
+
+          {state === MANUSCRIPT_STATES.DELETE_REF && (
+            <>
+              <label htmlFor="referee">Referee:</label>
+              <select
+                value={refereeForm}
+                onChange={(e) => setRefereeForm(e.target.value)}
+              >
+                <option value="">-- Select a referee --</option>
+                {referees.map((ref, index) => (
+                  <option key={index} value={ref}>
+                    {ref}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+          
           <button onClick={handleUpdateState}>Update State</button>
         </div>
       ) : (
