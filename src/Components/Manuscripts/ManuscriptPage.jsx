@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import * as api from "../../api";
+import { useUser } from '../../userContext';
+import { MANUSCRIPT_STATES } from '../../constants';
 
 
 export function ManuscriptPage() {
@@ -12,6 +14,16 @@ export function ManuscriptPage() {
   const [content, setContent] = useState("");
   const [submission_date, setSubmission_date] = useState("");
   const [state, setState] = useState('');
+  const validStates = Object.entries(MANUSCRIPT_STATES);
+  const { user } = useUser();
+  const isEditor = user?.roles?.includes('editor');
+
+
+  const handleUpdateState = () => {
+    api.updateManuscript(_id, { state })
+      .then(() => fetchManuscript())
+      .catch((err) => console.error("Failed to update state:", err));
+  };
   
   const fetchManuscript = () => {
     api.getManuscriptsById(_id)
@@ -37,7 +49,23 @@ export function ManuscriptPage() {
       <p>Abstract: {abstract}</p>
       <p>Content: {content}</p>
       <p>Date submitted: {submission_date}</p>
-      <p>State: {state}</p>
+      {isEditor ? (
+        <div>
+          <label htmlFor="state">State:</label>
+          <select
+            id="state"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+          >
+            {validStates.map(([label, code]) => (
+              <option key={code} value={code}>{label}</option>
+            ))}
+          </select>
+          <button onClick={handleUpdateState}>Update State</button>
+        </div>
+      ) : (
+        <p>State: {state}</p>
+      )}
     </div>
   );
 }

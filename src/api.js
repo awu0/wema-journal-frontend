@@ -45,9 +45,17 @@ export const getManuscriptsById = async (id) => {
   return axios.get(`${MANUSCRIPT_ENDPOINT}/${id}`);
 }
 
+export const getManuscriptStates = () => {
+  return axios.get(`${MANUSCRIPT_ENDPOINT}/states`);
+};
+
 export const deleteManuscript = async (id) => {
   return axios.delete(`${MANUSCRIPT_ENDPOINT}/${id}`);
 }
+
+export const updateManuscript = async (id, updatedFields) => {
+  return axios.patch(`${MANUSCRIPT_ENDPOINT}/${id}`, updatedFields);
+};
 
 // Extracted from Masthead component
 export const getMasthead = async () => {
