@@ -63,11 +63,11 @@ export function ManuscriptPage() {
             ))}
           </ul>
         ) : (
-          <p>No referees available.</p>
+        <span>No referees available.</span>
         )}
       </p>
 
-      {isEditor ? (
+      {isEditor && (
         <div>
           <label htmlFor="state">Update State:</label>
           <select
@@ -106,8 +106,6 @@ export function ManuscriptPage() {
 
           <button onClick={handleUpdateState}>Update State</button>
         </div>
-      ) : (
-        <p>State: {state}</p>
       )}
     </div>
   );
