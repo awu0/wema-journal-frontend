@@ -22,7 +22,12 @@ export const updateUser = async (email, userData) => {
 };
 
 export const deleteUser = async (email) => {
-  return axios.delete(`${USER_ENDPOINT}/${email}`);
+  const token = localStorage.getItem('authToken'); 
+  return axios.delete(`${USER_ENDPOINT}/${email}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
 };
 
 export const getRoles = async () => {
