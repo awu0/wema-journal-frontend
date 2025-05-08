@@ -247,6 +247,10 @@ function People() {
 
   // Delete Person Function
 const deletePerson = (email) => {
+  if (email === user?.email) {
+    setError("You cannot delete your own account.");
+    return;
+  }
   api.deleteUser(email)
     .then(() => {
       const personToDelete = people.find(person => person.email === email);
