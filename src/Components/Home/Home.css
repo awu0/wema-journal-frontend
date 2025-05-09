@@ -3,9 +3,29 @@
   max-width: 900px;
   margin: auto;
   font-family: 'Georgia', serif;
-  line-height: 1.6;
-  color: #333;
+  line-height: 1.7;
+  color: #2c3e50;
   position: relative;
+}
+
+.home-container h1, .home-container h2 {
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #34495e;
+}
+
+.home-container h1 {
+  font-size: 2rem;
+}
+
+.home-container h2 {
+  font-size: 1.5rem;
+}
+
+.home-container p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
 }
 
 .edit-home-button {
@@ -33,18 +53,29 @@
 }
 
 .edit-controls button {
-  background-color: #888;
-  color: white;
   font-size: 0.85rem;
   border: none;
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  color: white;
 }
 
-.edit-controls button:hover {
-  background-color: #666;
+.edit-controls button:first-child {
+  background-color: #2ecc71;
+}
+
+.edit-controls button:first-child:hover {
+  background-color: #27ae60;
+}
+
+.edit-controls button:last-child {
+  background-color: #e74c3c;
+}
+
+.edit-controls button:last-child:hover {
+  background-color: #c0392b;
 }
 
 .full-edit-textarea {
@@ -57,4 +88,29 @@
   border-radius: 6px;
   background: #f9f9f9;
   resize: vertical;
+  line-height: 1.5;
+}
+
+.full-edit-textarea:focus {
+  border-color: #555;
+  background-color: #fff;
+  outline: none;
+}
+
+.home-container blockquote {
+  border-left: 4px solid #ccc;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #555;
+  font-style: italic;
+}
+
+.home-container pre {
+  background: #eee;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }

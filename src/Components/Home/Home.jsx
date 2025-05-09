@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BACKEND_URL } from '../../constants';
 import { useUser } from '../../userContext';
 import './Home.css';
+
+const LOCAL_STORAGE_KEY = 'homePageContent';
 
 function Home() {
   const { user } = useUser();
@@ -16,26 +16,15 @@ Explore our mission, meet the team, and make a submission by using the navigatio
   });
 
   useEffect(() => {
-    const fetchHomeContent = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/home`);
-        if (response.data) {
-          setHomeContent(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching home content:", error);
-      }
-    };
-    fetchHomeContent();
+    const savedContent = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedContent) {
+      setHomeContent({ fullText: savedContent });
+    }
   }, []);
 
-  const handleSave = async () => {
-    try {
-      await axios.post(`${BACKEND_URL}/home`, homeContent);
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error saving home content:", error);
-    }
+  const handleSave = () => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, homeContent.fullText);
+    setIsEditing(false);
   };
 
   const renderFormattedText = (text) => {
