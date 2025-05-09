@@ -5,8 +5,9 @@ import {BACKEND_URL} from './constants';
 const USER_ENDPOINT = `${BACKEND_URL}/users`
 const MANUSCRIPT_ENDPOINT = `${BACKEND_URL}/manuscripts`
 
-export const getUsers = async () => {
-  return axios.get(USER_ENDPOINT);
+export const getUsers = async (params = {}) => {
+  const query = new URLSearchParams(params).toString();
+  return axios.get(`${USER_ENDPOINT}${query ? '?' + query : ''}`);
 };
 
 export const createUser = async (newUser) => {

@@ -14,6 +14,7 @@ export function ManuscriptPage() {
   const [content, setContent] = useState("");
   const [submission_date, setSubmission_date] = useState("");
   const [referees, setReferees] = useState([])
+  const [allReferees, setAllReferees] = useState([]);
 
   const [originalState, setOriginalState] = useState("");
   const [state, setState] = useState('');
@@ -39,7 +40,7 @@ export function ManuscriptPage() {
       setContent(data.content);
       setSubmission_date(data.submission_date);
       setState(data.state);
-      setReferees(data.ref);
+      setReferees(data.ref || []);
       setOriginalState(data.state);
 
       const validActionsRes = await api.getManuscriptValidActions(data.state);
@@ -50,7 +51,26 @@ export function ManuscriptPage() {
   }
 
   useEffect(() => {
-    fetchManuscript()
+    fetchManuscript();
+
+    api.getUsers({ role: "referee" })
+      .then(({ data }) => {
+        console.log("Referee data:", data);
+        if (Array.isArray(data)) {
+          setAllReferees(data.filter(user => 
+            user.roles && user.roles.includes('referee')
+          ).map(user => user.email));
+        } else {
+          const refereeEmails = [];
+          Object.entries(data).forEach(([email, userData]) => {
+            if (userData.roles && userData.roles.includes('referee')) {
+              refereeEmails.push(email);
+            }
+          });
+          setAllReferees(refereeEmails);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch referees:", err));
   }, [_id]);
 
   return (
@@ -92,7 +112,17 @@ export function ManuscriptPage() {
           {state === MANUSCRIPT_ACTIONS.ASSIGN_REF && (
             <>
               <label htmlFor="referee">Referee:</label>
-              <input value={refereeForm} onChange={(e) => setRefereeForm(e.target.value.trim())}/>
+              <select
+                value={refereeForm}
+                onChange={(e) => setRefereeForm(e.target.value)}
+              >
+                <option value="">-- Select a referee --</option>
+                {allReferees.map((ref, index) => (
+                  <option key={index} value={ref}>
+                    {ref}
+                  </option>
+                ))}
+              </select>
             </>
           )}
 
