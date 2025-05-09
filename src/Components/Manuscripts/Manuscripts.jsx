@@ -34,6 +34,7 @@ const ManuscriptRow = (params) => {
 function ViewManuscripts() {
   const { user } = useUser();
   const isEditor = user?.roles?.includes('editor');
+  const isAuthor = user?.roles?.includes('author');
   const [manuscripts, setManuscripts] = useState([]);
   const [error, setError] = useState('');
 
@@ -70,7 +71,14 @@ function ViewManuscripts() {
     api.getManuscripts()
       .then(
         ({data}) => {
-          setManuscripts(data);
+          if (isAuthor && !isEditor && user?.email) {
+            const filteredManuscripts = data.filter(manuscript => 
+              manuscript.author === user.email || manuscript.author === user.name
+            );
+            setManuscripts(filteredManuscripts);
+          } else {
+            setManuscripts(data);
+          }
         }
       )
       .catch((error) => setError(`There was a problem retrieving the list of manuscripts. ${error}`));

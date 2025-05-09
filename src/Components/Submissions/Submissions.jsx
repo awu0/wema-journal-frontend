@@ -110,7 +110,7 @@ function Submissions() {
             id="author"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Enter author name"
+            placeholder="Enter author name (case-sensitive)"
             required
           />
         </div>
