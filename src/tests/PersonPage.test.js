@@ -93,7 +93,7 @@ describe("PersonPage", () => {
           name: "Jane Doe",
           email: "test@example.com",
           affiliation: "NYU",
-          role: "admin",
+          roles: "admin",
         })
       );
     });

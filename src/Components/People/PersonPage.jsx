@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-
 import * as api from "../../api"
+import './styles.css';
 
 export function PersonPage() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export function PersonPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
-  const [role, setRole] = useState('');
+  const [roles, setRoles] = useState([]);
   const [password, setPassword] = useState('');
 
   const [roleOptions, setRoleOptions] = useState({});
@@ -34,8 +34,9 @@ export function PersonPage() {
   const changeAffiliation = (event) => {
     setAffiliation(event.target.value);
   };
-  const changeRole = (event) => {
-    setRole(event.target.value);
+  const changeRoles = (event) => {
+    const selected = Array.from(event.target.selectedOptions, (option) => option.value);
+    setRoles(selected);
   };
   const changePassword = (event) => {
     setPassword(event.target.value);
@@ -48,7 +49,7 @@ export function PersonPage() {
         setName(data.name);
         setEmail(data.email);
         setAffiliation(data.affiliation);
-        setRole(data.role);
+        setRoles(data.roles);
         setPassword(data.password)
       })
       .catch(() => {
@@ -69,7 +70,7 @@ export function PersonPage() {
       name: name,
       email: email,
       affiliation: affiliation,
-      role: role,
+      roles: roles,
       password: password,
     }
     api.updateUser(email, updatedPerson)
@@ -110,7 +111,7 @@ export function PersonPage() {
   if (error) {
     return <p>{error}</p>;
   }
-  
+
   if (!person) {
     return <p>Loading...</p>;
   }
@@ -152,24 +153,25 @@ export function PersonPage() {
               </label>
               <input type="text" id="affiliation" value={affiliation} onChange={changeAffiliation}/>
 
-              <label htmlFor="role">
-                Role
+              <label htmlFor="roles">
+                Roles
               </label>
               <select
+                multiple
                 required
-                name="role"
-                value={role}
-                onChange={changeRole}
-                style={{padding: '8px', borderRadius: '4px', border: '1px solid #ccc'}}
+                name="roles"
+                value={roles}
+                onChange={changeRoles}
+                // style={{padding: '24px 8px 24px 8px', borderRadius: '4px', border: '1px solid #ccc'}}
+                className={'roles-select'}
               >
-                <option value="" disabled>Select a role</option>
-                {/* Default option */}
                 {Object.keys(roleOptions).map((code) => (
                   <option key={code}>
                     {roleOptions[code]}
                   </option>
                 ))}
               </select>
+             
               <label htmlFor="password">
                 New Password
               </label>
