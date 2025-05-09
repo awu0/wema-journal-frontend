@@ -44,8 +44,8 @@ const login = async (email, password) => {
 /**
  * Register user
  */
-const register = async (name, email, password, affiliation) => {
-  const response = await api.register(name, email, password, affiliation);
+const register = async (name, email, password, affiliation, role) => {
+  const response = await api.register(name, email, password, affiliation, role);
 
   if (response.data.token) {
     localStorage.setItem('authToken', response.data.token);

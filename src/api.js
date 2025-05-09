@@ -38,8 +38,8 @@ export const login = async (email, password) => {
   return axios.post(`${BACKEND_URL}/login`, { email, password });
 };
 
-export const register = async (name, email, password, affiliation) => {
-  return axios.post(`${BACKEND_URL}/register`, { name, email, password, affiliation, roles: "author" });
+export const register = async (name, email, password, affiliation, role) => {
+  return axios.post(`${BACKEND_URL}/register`, { name, email, password, affiliation, role });
 };
 
 export const getManuscripts = async () => {

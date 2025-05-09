@@ -14,3 +14,5 @@ export const MANUSCRIPT_ACTIONS = {
 export const MANUSCRIPT_ACTION_TO_NAME = Object.fromEntries(
   Object.entries(MANUSCRIPT_ACTIONS).map(([key, value]) => [value, key])
 );
+
+export const DEFAULT_USER_ROLE = 'author';

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import './Register.css';
 import authService from "../auth";
+import {DEFAULT_USER_ROLE} from "../constants";
 
 function Register() {
   const [name, setName] = useState('');
@@ -29,7 +30,7 @@ function Register() {
 
     setError('');
 
-    authService.register(name, email, password, affiliation).then(() => {
+    authService.register(name, email, password, affiliation, DEFAULT_USER_ROLE).then(() => {
       // redirect to page
       navigate('/home');
       window.location.reload();
