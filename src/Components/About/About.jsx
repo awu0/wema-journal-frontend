@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BACKEND_URL } from '../../constants';
 import { useUser } from '../../userContext';
 import './About.css';
+
+const LOCAL_STORAGE_KEY = 'aboutPageContent';
 
 function About() {
   const { user } = useUser();
@@ -13,26 +13,15 @@ function About() {
   });
 
   useEffect(() => {
-    const fetchAboutContent = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/about`);
-        if (response.data) {
-          setAboutContent(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching about content:", error);
-      }
-    };
-    fetchAboutContent();
+    const savedContent = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedContent) {
+      setAboutContent({ fullText: savedContent });
+    }
   }, []);
 
-  const handleSave = async () => {
-    try {
-      await axios.post(`${BACKEND_URL}/about`, aboutContent);
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error saving about content:", error);
-    }
+  const handleSave = () => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, aboutContent.fullText);
+    setIsEditing(false);
   };
 
   const renderFormattedText = (text) => {
@@ -47,7 +36,6 @@ function About() {
 
   return (
     <div className="about-container">
-      {/* Edit button - would be conditional on admin status in production */}
       {isEditor && (
         !isEditing ? (
           <button className="edit-button" onClick={() => setIsEditing(true)}>
