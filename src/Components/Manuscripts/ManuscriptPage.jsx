@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import * as api from "../../api";
 import {useUser} from '../../userContext';
-import {MANUSCRIPT_ACTION_TO_NAME, MANUSCRIPT_ACTIONS} from '../../constants';
+import {MANUSCRIPT_ACTION_TO_NAME, MANUSCRIPT_ACTIONS, MANUSCRIPT_STATE_TO_NAME} from '../../constants';
 
 
 export function ManuscriptPage() {
@@ -81,7 +81,7 @@ export function ManuscriptPage() {
       <p>Abstract: {abstract}</p>
       <p>Content: {content}</p>
       <p>Date submitted: {submission_date}</p>
-      <p>State: {MANUSCRIPT_ACTION_TO_NAME[originalState]} ({originalState})</p>
+      <p>State: {MANUSCRIPT_STATE_TO_NAME[originalState]} ({originalState})</p>
       <div>Referees: {Array.isArray(referees) && referees.length > 0 ? (
         <ul>
           {referees.map((ref, index) => (

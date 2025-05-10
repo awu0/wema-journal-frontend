@@ -15,4 +15,21 @@ export const MANUSCRIPT_ACTION_TO_NAME = Object.fromEntries(
   Object.entries(MANUSCRIPT_ACTIONS).map(([key, value]) => [value, key])
 );
 
+export const MANUSCRIPT_STATES = {
+  COPY_EDIT: 'CED',
+  IN_REF_REVIEW: 'REV',
+  AUTHOR_REVISIONS: 'AUR',
+  SUBMITTED: 'SUB',
+  REJECTED: 'REJ',
+  WITHDRAWN: 'WIT',
+  IN_EDITOR_REVIEW: 'ERW',
+  IN_AUTHOR_REVIEW: 'ARW',
+  FORMATTING: 'FMT',
+  PUBLISHED: 'PUB'
+};
+
+export const MANUSCRIPT_STATE_TO_NAME = Object.fromEntries(
+  Object.entries(MANUSCRIPT_STATES).map(([key, value]) => [value, key])
+);
+
 export const DEFAULT_USER_ROLE = 'author';
