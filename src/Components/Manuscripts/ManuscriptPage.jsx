@@ -93,22 +93,22 @@ export function ManuscriptPage() {
       )}
       </div>
 
+      <label htmlFor="state">Update State:</label>
+      <select
+        id="state"
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+      >
+        <option value="">-- Select Action --</option>
+        {validStates.map(state => (
+          <option key={state} value={state}>
+            {MANUSCRIPT_ACTION_TO_NAME[state]} ({state})
+          </option>
+        ))}
+      </select>
+
       {isEditor && (
         <div>
-          <label htmlFor="state">Update State:</label>
-          <select
-            id="state"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-          >
-            <option value="">-- Select Action --</option>
-            {validStates.map(state => (
-              <option key={state} value={state}>
-                {MANUSCRIPT_ACTION_TO_NAME[state]} ({state})
-              </option>
-            ))}
-          </select>
-
           {state === MANUSCRIPT_ACTIONS.ASSIGN_REF && (
             <>
               <label htmlFor="referee">Referee:</label>
