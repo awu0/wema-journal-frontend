@@ -70,8 +70,17 @@ export const manuscriptReceiveAction = async (_id, state, action, ref=undefined)
 };
 
 export const getManuscriptValidActions = async (state) => {
-  return axios.post(`${MANUSCRIPT_ENDPOINT}/valid_actions`, { state });
-}
+  const token = localStorage.getItem('authToken');
+  return axios.post(
+    `${MANUSCRIPT_ENDPOINT}/valid_actions`, 
+    { state },
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+};
 
 // Extracted from Masthead component
 export const getMasthead = async () => {

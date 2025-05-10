@@ -100,11 +100,18 @@ export function ManuscriptPage() {
         onChange={(e) => setState(e.target.value)}
       >
         <option value="">-- Select Action --</option>
-        {validStates.map(state => (
-          <option key={state} value={state}>
-            {MANUSCRIPT_ACTION_TO_NAME[state]} ({state})
-          </option>
-        ))}
+        {validStates
+          .filter(action => {
+            if (user?.roles?.includes('author')) {
+              return action === MANUSCRIPT_ACTIONS.DONE || action === MANUSCRIPT_ACTIONS.WITHDRAW;
+            }
+            return true; // all actions allowed for other roles
+          })
+          .map(action => (
+            <option key={action} value={action}>
+              {MANUSCRIPT_ACTION_TO_NAME[action]} ({action})
+            </option>
+          ))}
       </select>
 
       {isEditor && (
@@ -142,10 +149,10 @@ export function ManuscriptPage() {
               </select>
             </>
           )}
-
-          <button onClick={handleUpdateState}>Update State</button>
         </div>
       )}
+
+        <button onClick={handleUpdateState}>Update State</button>
     </div>
   );
 }
