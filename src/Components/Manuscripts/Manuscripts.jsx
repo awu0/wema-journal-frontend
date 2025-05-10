@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import { useUser } from '../../userContext';
 import * as api from "../../api";
 import './Manuscripts.css';
+import { useNavigate } from "react-router-dom";
 
 const ManuscriptRow = (params) => {
   const { user } = useUser();
@@ -33,12 +34,23 @@ const ManuscriptRow = (params) => {
 
 function ViewManuscripts() {
   const { user } = useUser();
-  const isEditor = user?.roles?.includes('editor');
-  const isAuthor = user?.roles?.includes('author');
+  const navigate = useNavigate();
   const [manuscripts, setManuscripts] = useState([]);
   const [error, setError] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: "title", direction: "asc" });
 
-  const [sortConfig, setSortConfig] = useState({key: "title", direction: "asc"});
+  const isEditor = user?.roles?.includes('editor');
+  const isAuthor = user?.roles?.includes('author');
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    } else if (!isEditor && !isAuthor) {
+      navigate("/unauthorized");  // optional: create a nicer "Access Denied" page
+    } else {
+      fetchManuscripts();
+    }
+  }, [user, navigate]);
 
   const handleSort = (key) => {
     let direction = "asc";
@@ -69,18 +81,14 @@ function ViewManuscripts() {
   // fetch manuscript Data
   const fetchManuscripts = () => {
     api.getManuscripts()
-      .then(
-        ({data}) => {
-          if (isAuthor && !isEditor && user?.email) {
-            const filteredManuscripts = data.filter(manuscript => 
-              manuscript.author === user.email || manuscript.author === user.name
-            );
-            setManuscripts(filteredManuscripts);
-          } else {
-            setManuscripts(data);
-          }
+      .then(({ data }) => {
+        if (isAuthor && !isEditor && user?.email) {
+          const filtered = data.filter(m => m.author === user.email || m.author === user.name);
+          setManuscripts(filtered);
+        } else {
+          setManuscripts(data);
         }
-      )
+      })
       .catch((error) => setError(`There was a problem retrieving the list of manuscripts. ${error}`));
   };
 
