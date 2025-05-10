@@ -8,7 +8,6 @@ function Submissions() {
   const { user } = useUser();
   const isEditor = user?.roles?.includes('editor');
   const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
   const [abstract, setAbstract] = useState('');
   const [content, setContent] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState('');
@@ -24,14 +23,14 @@ function Submissions() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !author || !abstract || !content) {
+    if (!title || !abstract || !content) {
       setSubmissionStatus('Please fill out all fields.');
       return;
     }
 
     const submissionData = {
       title,
-      author,
+      author: user?.name || 'Unknown Author',
       abstract,
       content,
     };
@@ -45,7 +44,6 @@ function Submissions() {
       });
       setSubmissionStatus('Submission successful!');
       setTitle('');
-      setAuthor('');
       setAbstract('');
       setContent(''); 
     } catch (error) {
@@ -99,18 +97,6 @@ function Submissions() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter manuscript title"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="author">Author Name</label>
-          <input
-            type="text"
-            id="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Enter author name (case-sensitive)"
             required
           />
         </div>
