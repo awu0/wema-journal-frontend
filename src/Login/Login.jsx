@@ -23,9 +23,12 @@ function Login() {
       // redirect to page
       navigate('/home');
       window.location.reload();
-    }).catch((error) => {
-      setError(error.response.data.message);
     })
+    .catch((error) => {
+      const message =
+        error?.response?.data?.message || 'Login failed. Please try again.';
+      setError(message);
+    });
   };
 
   return (
