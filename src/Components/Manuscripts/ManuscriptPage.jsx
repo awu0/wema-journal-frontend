@@ -81,7 +81,7 @@ export function ManuscriptPage() {
       <p>Abstract: {abstract}</p>
       <p>Content: {content}</p>
       <p>Date submitted: {submission_date}</p>
-      <p>State: {originalState}</p>
+      <p>State: {MANUSCRIPT_ACTION_TO_NAME[originalState]} ({originalState})</p>
       <div>Referees: {Array.isArray(referees) && referees.length > 0 ? (
         <ul>
           {referees.map((ref, index) => (
