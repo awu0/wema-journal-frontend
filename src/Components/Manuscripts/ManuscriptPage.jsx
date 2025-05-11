@@ -102,10 +102,19 @@ export function ManuscriptPage() {
         <option value="">-- Select Action --</option>
         {validStates
           .filter(action => {
-            if (user?.roles?.includes('author')) {
-              return action === MANUSCRIPT_ACTIONS.DONE || action === MANUSCRIPT_ACTIONS.WITHDRAW;
+            const isAuthorOfThis = user?.name === author;
+
+            if (!isAuthorOfThis && action === MANUSCRIPT_ACTIONS.WITHDRAW) {
+              return false; 
             }
-            return true; // all actions allowed for other roles
+            if (isAuthorOfThis && state === MANUSCRIPT_STATE_TO_NAME.IN_AUTHOR_REVIEW && action === MANUSCRIPT_ACTIONS.DONE) {
+              return true; 
+            }
+            if (isAuthorOfThis && state === MANUSCRIPT_STATE_TO_NAME.AUTHOR_REVISIONS && action === MANUSCRIPT_ACTIONS.DONE) {
+              return true; 
+            }
+
+            return true; // allow everything else
           })
           .map(action => (
             <option key={action} value={action}>
